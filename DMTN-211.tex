@@ -1,4 +1,16 @@
-\documentclass[DM,authoryear,toc]{lsstdoc}
+\documentclass[]{spie}
+%\documentclass[a4paper]{spie}  %>>> use this instead for A4 paper
+%\documentclass[nocompress]{spie}  %>>> to avoid compression of citations
+
+\renewcommand{\baselinestretch}{1.0} % Change to 1.65 for double spacing
+
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage{graphicx}
+\usepackage{rotating}
+\usepackage{multicol}
+\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+\usepackage{longtable}
+
 % lsstdoc documentation: https://lsst-texmf.lsst.io/lsstdoc.html
 \input{meta}
 
@@ -6,65 +18,44 @@
 
 % Local commands go here.
 
-%If you want glossaries
-%\input{aglossary.tex}
-%\makeglossaries
+\date{\today}
 
-\title{Quantifying the scientific performance of LSST data products.}
+\input{authors}
 
-% Optional subtitle
-% \setDocSubtitle{A subtitle}
+\title{Performance Characterization of the LSST Data Products}
 
-\author{%
-Leanne Guy
-}
+\newcommand{\docRef}{DMTN-211}
+\newcommand{\docUpstreamLocation}{\url{https://github.com/lsst-dm/dmtn-211}}
 
-\setDocRef{DMTN-211}
-\setDocUpstreamLocation{\url{https://github.com/lsst-dm/dmtn-211}}
-
-\date{\vcsDate}
-
-% Optional: name of the document's curator
-% \setDocCurator{The Curator of this Document}
-
-\setDocAbstract{%
-This paper presents the Rubin Observatory system to quantify the  performance of the LSST data products.
-}
-
-% Change history defined here.
-% Order: oldest first.
-% Fields: VERSION, DATE, DESCRIPTION, OWNER NAME.
-% See LPM-51 for version number policy.
-\setDocChangeRecord{%
-  \addtohist{1}{YYYY-MM-DD}{Unreleased.}{Leanne Guy}
-}
-
+% Option to view page numbers
+\pagestyle{empty} % change to \pagestyle{plain} for page numbers   
+\setcounter{page}{1} % Set start page numbering at e.g. 301
 
 \begin{document}
-
-% Create the title page.
 \maketitle
-% Frequently for a technote we do not want a title page  uncomment this to remove the title page and changelog.
-% use \mkshorttitle to remove the extra pages
+%\hypersetup{pdftitle={\@title}, pdfauthor={\@author}, pdfkeywords={\@keywords}}
 
-% ADD CONTENT HERE
-% You can also use the \input command to include several content files.
+% Remove when author list is complete
+\textbf{Note: Author list is not complete and the title is a working title for now }
+
+\input{abstract}
+
+% Include a list of keywords after the abstract 
+\keywords{Rubin Observatory, Performance Characterization, Verification}
+
+\input{body}
 
 \appendix
+% Remove this when you start your paper
+\input{appendix}
 % Include all the relevant bib files.
 % https://lsst-texmf.lsst.io/lsstdoc.html#bibliographies
 \section{References} \label{sec:bib}
-\renewcommand{\refname}{} % Suppress default Bibliography section
-\bibliography{local,lsst,lsst-dm,refs_ads,refs,books}
+\bibliographystyle{spiebib}
+\bibliography{local,lsst,lsst-dm}
 
 % Make sure lsst-texmf/bin/generateAcronyms.py is in your path
 \section{Acronyms} \label{sec:acronyms}
 \input{acronyms.tex}
-% If you want glossary uncomment below -- comment out the two lines above
-%\printglossaries
-
-
-
-
 
 \end{document}
