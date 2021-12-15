@@ -10,7 +10,7 @@ Quantifying the scientific performance of LSST data products.
 DMTN-211
 ========
 
-This paper presents the Rubin Observatory system to quantify the  performance of the LSST data products.
+This technote contains the draft proposed SPIE paper for Faro: The Rubin Observatory system to quantify the performance of the LSST data products.
 
 Links
 =====
