@@ -10,6 +10,7 @@
 \usepackage{multicol}
 \usepackage[colorlinks=true, allcolors=blue]{hyperref}
 \usepackage{longtable}
+\usepackage[english,iso]{isodate}
 
 % lsstdoc documentation: https://lsst-texmf.lsst.io/lsstdoc.html
 \input{meta}
@@ -22,7 +23,7 @@
 
 \input{authors}
 
-\title{Performance Characterization of the LSST Data Products}
+\title{Quantifying the Scientific Performance of the Rubin Observatory LSST Data Products}
 
 \newcommand{\docRef}{DMTN-211}
 \newcommand{\docUpstreamLocation}{\url{https://github.com/lsst-dm/dmtn-211}}
@@ -30,7 +31,7 @@
 % Option to view page numbers
 \pagestyle{empty} % change to \pagestyle{plain} for page numbers   
 \setcounter{page}{1} % Set start page numbering at e.g. 301
-
+	
 \begin{document}
 \maketitle
 %\hypersetup{pdftitle={\@title}, pdfauthor={\@author}, pdfkeywords={\@keywords}}
@@ -41,9 +42,9 @@
 \input{abstract}
 
 % Include a list of keywords after the abstract 
-\keywords{Rubin Observatory, Performance Characterization, Verification}
+\keywords{Rubin Observatory, Verification, Performance}
 
-\input{body}
+%\input{body}
 
 \appendix
 % Remove this when you start your paper
