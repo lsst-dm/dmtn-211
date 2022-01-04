@@ -3,9 +3,9 @@
 .. image:: https://github.com/lsst-dm/dmtn-211/workflows/CI/badge.svg
    :target: https://github.com/lsst-dm/dmtn-211/actions/
 
-#############################################################
-Quantifying the scientific performance of LSST data products.
-#############################################################
+#######################################################################################################
+Faro: A framework for measuring the scientific performance of petascale Rubin Observatory data products
+#######################################################################################################
 
 DMTN-211
 ========
