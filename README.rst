@@ -10,7 +10,7 @@ Faro: A framework for measuring the scientific performance of petascale Rubin Ob
 DMTN-211
 ========
 
-This technote contains the draft proposed SPIE paper for Faro: The Rubin Observatory system to quantify the performance of the LSST data products.
+This technote contains the draft proposed SPIE paper for Faro: A framework for measuring the scientific performance of petascale Rubin Observatory data products
 
 Links
 =====
