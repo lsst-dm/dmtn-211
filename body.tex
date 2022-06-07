@@ -39,11 +39,34 @@ The following analysis, corresponding to analysis contexts  are currently suppor
 
 \subsection{Base Classes} \label{ssec:base_classes}
 
+
+\subsection{Analysis Contexts} \label{ssec:contexts}
+
+An analysis context defines the type of input data unit corresponding to the granularity of metric computation, e.g per-detector, per-visit, per-patch or per-tract.
+\faro supports metric calculation for a multiple analysis contexts, that is, the same mathematical function can be called in a different analysis context to produce a different metric value. 
+For example, the residual PSF ellipticity correlation metrics can be computed on a per-visit or per-tract analysis context. 
+For some metrics, only certain analysis contexts make sense and often the choice of analysis context will be dictated by statistics, e.g a small 1\degsq CI dataset may not contain enough data to compute some metrics on a per-tract level. 
+\faro allows users to easily define a new analysis contexts for their particular science need. 
+
+The following analysis, corresponding to analysis contexts  are currently supported in \faro:
+\begin{itemize}
+\item per-detector source catalogs i.e., single-visit detections
+\item per-visit source catalogs i.e., single-visit detections
+\item per-patch object catalogs i.e., coadd detections both per-band and multi-band
+\item per-tract object catalogs i.e., coadd detections, both per-band and multi-band input
+\item per-patch matched source catalogs, i.e., set of single-visit detections of the same objects, both single band and multi-band input
+\item per-tract matched source catalogs, i.e., set of single-visit detections of the same objects 
+\end{itemize}
+
+
+\subsection{Base Classes} \label{ssec:baseclasses}
+
 \faro provides a set of base classes corresponding to the various analysis contexts described above that use the \texttt{PipelineTask} framework to build a quantum graph\footnote{A data structure that represents a concrete workflow generated from a Pipeline.} and interact with Butler for data i/o.
-The base classes abstract away the data i/o, leaving the scientist free to focus on the algorithmic details  relevant to their particular analysis. 
-The primary base classes in the lsst.faro package are \texttt{CatalogMeasurementBaseConnections}, to define the desired i/o,  \texttt{CatalogMeasurementBaseConfig}, to provide the configuration, and \texttt{CatalogMeasurementBaseTask}, to run the algorithm and store teh output data in the Butler. 
-Each of these base classes inherits from \texttt{MetricConnections}, \texttt{MetricConfig}, and \texttt{MetricTask}, in the \texttt{lsst.verify} package respectively, and adds additional general functionality for computing science performance metrics based on Source and Object catalog inputs. 
-Additional base classes can be easily added following this scheme for new analysis contexts. 
+By abstracting the data i/o, developers can focus on the algorithmic implementation of the metrics. 
+The primary base classes in the lsst.faro package are \texttt{CatalogMeasurementBaseConnections}, \texttt{CatalogMeasurementBaseConfig}, and \texttt{CatalogMeasurementBaseTask}, each of which inherits from  \texttt{MetricConnections}, \texttt{MetricConfig}, and \texttt{MetricTask}, in the \texttt{lsst.verify} package respectively, and adds additional general functionality for computing science performance metrics based on Source and Object catalog inputs. 
+Once the analysis context base class is defined, developers can implement metrics by creating a dedicated \texttt{Task} that will operate on in-memory python objects. 
+Unlike many other \texttt{Task}s  in the LSST science pipelines, such as fitting a WCS or detecting sources on an image, \texttt{Task}s for metric computation with \faro work with in-memory python objects.
+The base classes for the various analysis contexts are located in the \texttt{python/lsst/faro/measurement} directory.
 
 \subsection{Stages of Metric Computation} \label{ssec:stages}
 
@@ -54,6 +77,12 @@ Metric computation with \faro proceeds through three stages:
 \item \textbf{Summary:}  a single scalar summary statistic, e.g a mean, median, etc is generated from the collection of input measurements computed in the measurement stage.  Summary statistics are stored as \texttt{lsst.verify.Measurement} objects and persisted in the Butler.
 \end{enumerate}
 Not all metrics will necessarily have a  preparation stage as there may be no additional intermediate data products needed to compute the metric than those generated as part of the pipelines processing, however all must have a measurement and summary stage. 
+
+Take as an example the photometric repeatability metric, PA1, which measures the RMS photometric repeatability of bright non-saturated unresolved point sources in a single filter.
+During the preparation stage, a matched source catalog is created for each tract and band that matches source detections in individual visits that correspond to the same physical astronomical object\footnote{LSST defines an Object as an astrophysical physical object, e.g a star, galaxy or asteroid, and a Source as a  single detection of an astrophysical object in an image. The association of Sources that are non-moving lead to Objects; the association of moving Sources leads to Solar System Objects.}. 
+During the measurement stage, for each tract and band, the matched catalog computed and stored in the preparation stage is loaded into memory and used to compute the RMS scatter of fluxes for a single astrophysical object. 
+In the final summary stage, the measurements for the ensemble of individual tracts computed in the measurement stage are loaded to compute a median summary statistic per band. 
+This final summary statistic characterizes the overall performance for the dataset per band and is stored as an \texttt{lsst.verify} object in the Butler. 
 
 Take as an example the photometric repeatability metric, PA1, which measures the RMS photometric repeatability of bright non-saturated unresolved point sources in a single filter.
 During the preparation stage, a matched source catalog is created for each tract and band that matches source detections in individual visits that correspond to the same physical astronomical object\footnote{LSST defines an Object as an astrophysical physical object, e.g a star, galaxy or asteroid, and a Source as a  single detection of an astrophysical object in an image. The association of Sources that are non-moving lead to Objects; the association of moving Sources leads to Solar System Objects.}. 
