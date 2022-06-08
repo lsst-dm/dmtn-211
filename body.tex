@@ -40,6 +40,7 @@ The following analysis, corresponding to analysis contexts  are currently suppor
 \subsection{Base Classes} \label{ssec:base_classes}
 
 
+
 \subsection{Analysis Contexts} \label{ssec:contexts}
 
 An analysis context defines the type of input data unit corresponding to the granularity of metric computation, e.g per-detector, per-visit, per-patch or per-tract.
@@ -250,6 +251,7 @@ This allows us to monitor the effects of major strategic developments in algorit
 Figure \ref{fig:cmr_r23} shows an excerpt from the Characterization Metric Report \cite{dmtr-351} for the most recent release of the LSST science pipelines, Release 23.0.1.
 From this excerpt, we see that there were improvements in the photometry and ellipticity correlation metrics as compared to the previous release, which reflect improvements in the photometric calibration algorithms to better handle fields of view near the spatial edges of survey footprints. 
 \begin{figure}[!ht]
+
   \centering
   \includegraphics[width=0.45\textwidth]{figures/cmr_r23_photometric_metrics} 
   \hspace{0.5cm}
@@ -348,3 +350,4 @@ In addition to computing the normative science performance metrics on the LSST d
 The system is successfully running in nightly and weekly CI on precursor datasets to track the performance of the LSST science pipelines and provide regression analysis as development continues. 
 \faro has also been successfully demonstrated at scale with the reprocessing of the DESC DC2 dataset \cite{2021ApJS..253...31L} at the Rubin Interim Data Facility (IDF) running on Google cloud \cite{2021arXiv211115030O} in the context of Rubin Data Preview 0.2 (DP0.2)\cite{RTN-001}. 
 As we enter LSST commissioning, \faro will be a powerful tool to gain rapid insight into the quality of the data coming off the telescope. 
+
