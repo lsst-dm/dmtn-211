@@ -43,6 +43,7 @@ The following analysis, corresponding to analysis contexts  are currently suppor
 
 \subsection{Analysis Contexts} \label{ssec:contexts}
 
+
 An analysis context defines the type of input data unit corresponding to the granularity of metric computation, e.g per-detector, per-visit, per-patch or per-tract.
 \faro supports metric calculation for a multiple analysis contexts, that is, the same mathematical function can be called in a different analysis context to produce a different metric value. 
 For example, the residual PSF ellipticity correlation metrics can be computed on a per-visit or per-tract analysis context. 
@@ -59,7 +60,7 @@ The following analysis, corresponding to analysis contexts  are currently suppor
 \item per-tract matched source catalogs, i.e., set of single-visit detections of the same objects 
 \end{itemize}
 
-\subsection{Base Classes} \label{ssec:baseclasses}
+\subsection{Base Classes} \label{ssec:base_classes}
 
 \faro provides a set of base classes corresponding to the various analysis contexts described above that use the \texttt{PipelineTask} framework to build a quantum graph\footnote{A data structure that represents a concrete workflow generated from a Pipeline.} and interact with Butler for data i/o.
 The base classes abstract away the data i/o, leaving the scientist free to focus on the algorithmic details  relevant to their particular analysis. 
