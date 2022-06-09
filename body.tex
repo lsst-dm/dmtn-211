@@ -132,6 +132,52 @@ imports:
 
 \section{Adding a  Metric} \label{sec:add}
 
+We anticipate that many developers and scientists will want to define write their own metrics specifically to address concerns that arise as LSST progresses through the construction phase and into operations.
+The first step in writing a new metric is to define the analysis context (\S \ref{ssec:analysis_context}) and to review the associated \texttt{Connections},  \texttt{Config}, and  \texttt{Task} base classes (\S \ref{ssec:base_classes}) to understand the in-memory python objects that will be passed to the run method of the metric measurement task, and the configuration options.
+If the required analysis context and associated base class do not exist, they must first be created. 
+Once the analysis context and base class are defined, the metric can be implemented by creating a measurement \texttt{Task}, an instance of \texttt{lsst.pipe.base.Task} that will operate on in-memory python objects and compute the metric. 
+Finally, the new metric is added to the appropriate pipeline YAML file so that it can be run.
+Figures \ref{fig:num_sources_task} show an example of a non-normative metric \texttt{Task} written to compute the number of rows in an input Source or Object catalog, \texttt{NumSourcesTask}
+
+\begin{figure}[htb]
+  \lstset{language=python}
+  \begin{lstlisting}
+  
+class NumSourcesTask(Task):
+    r"""Simple default task to count the number of sources/objects in catalog."""
+
+    ConfigClass = NumSourcesConfig
+    _DefaultName = "numSourcesTask"
+
+    def run(self, metricName, catalog, **kwargs):
+        """Run NumSourcesTask
+        Parameters
+        ----------
+        metricName : `str`
+            The name of the metric to measure.
+        catalog : `dict`
+            `lsst.afw.table` Catalog type
+        kwargs
+            Extra keyword arguments used to construct the task.
+        Returns
+        -------
+        measurement : `Struct`
+            The measured value of the metric.
+        """
+        self.log.info("Measuring %s", metricName)
+        if self.config.doPrimary:
+            nSources = np.sum(catalog[self.config._getColumnName(
+                "detect_isPrimary")] is True)
+        else:
+            nSources = len(catalog)
+        self.log.info("Number of sources (nSources) = %i" % nSources)
+        meas = Measurement("nsrcMeas", nSources * u.count)
+        return Struct(measurement=meas)    \end{lstlisting}
+        
+  \caption{Implementation of NumSourcesTask, a metric to compute the number of sources in an input catalog. }
+  \label{fig:num_sources_task}
+  \par\medskip
+\end{figure}
 
 \section{Tracking and Visualization} \label{sec:tracking}
 
