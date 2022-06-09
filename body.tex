@@ -189,11 +189,11 @@ class NumSourcesTask(Task):
 \subsubsection{Software Release Characterization } \label{sssec:characterization}
 
 Major releases of the LSST science pipelines are made approximately once every six months. 
-Every major release is accompanied by a Characterization Metric Report that describes the scientific performance of the release measured on the HSC RC2 precursor dataset. 
-All metrics reported therein are calculated using the \faro metric calculation package. 
-Figure \ref{fig:cmr-r23} shows an excerpt from the Characterization Metric Report \cite{dmtr-351} for the most recent release of the LSST science pipelines, Release 23.0.1.
+Every major release is accompanied by a Characterization Metric Report, which describes the scientific performance of the release by computing \faro metrics on the HSC RC2 precursor dataset. 
 The report compares values of metrics computed on the same dataset with a) those computed using the previous release and b) the LSST SRD design specifications.  
-
+Such a report allows us to monitor the effects of major strategic developments in algorithms over longer periods of time. 
+Figure \ref{fig:cmr-r23} shows an excerpt from the Characterization Metric Report \cite{dmtr-351} for the most recent release of the LSST science pipelines, Release 23.0.1.
+From this excerpt, we see that there were improvements in the photometry and ellipticity correlation metrics as compared to the previous release, which reflect improvements in the photometric calibration algorithms to better handle fields of view near the spatial edges of survey footprints. 
 \begin{figure}[h]
   \centering
   \includegraphics[width=0.45\textwidth]{figures/cmr_r23_photometric_metrics} 
