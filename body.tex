@@ -1,8 +1,6 @@
 \section{Introduction} \label{sec:intro}
 
 
-\section{Design goals} \label{sec:design}
-
 
 \section{The Faro Framework} \label{sec:faro}
 
@@ -40,7 +38,6 @@ The following analysis, corresponding to analysis contexts  are currently suppor
 \item per-tract matched source catalogs, i.e., set of single-visit detections of the same objects 
 \end{itemize}
 
-
 \subsection{Base Classes} \label{ssec:baseclasses}
 
 \faro provides a set of base classes corresponding to the various analysis contexts described above that use the \texttt{PipelineTask} framework to build a quantum graph\footnote{A data structure that represents a concrete workflow generated from a Pipeline.} and interact with Butler for data i/o.
@@ -66,9 +63,73 @@ During the measurement stage, for each tract and band, the matched catalog compu
 In the final summary stage, the measurements for the ensemble of individual tracts computed in the measurement stage are loaded to compute a median summary statistic per band. 
 This final summary statistic characterizes the overall performance for the dataset per band and is stored as an \texttt{lsst.verify} object in the Butler. 
 
-
 \subsection{Processing Pipelines} \label{ssec:pipelines}
 
+
+Pipelines, configurations in the form of YAML files, are used to define the \faro metrics to be computed together with the  detailed execution parameters for metric calculations. 
+The \faro package provides a set of pre-defined pipelines, defined per analysis context, for many common configurations of computing metrics. 
+\faro pipelines can be run as an after burner to the LSST Science Pipelines or can be interspersed with science pipelines processing to compute , as long as the necessary input data products have been computed and are stored in the Butler.  
+For example, all single-visit metrics can already be computed once the single-frame processing steps have completed. 
+This enables us to promptly assess performance and take any corrective action early. 
+Figure \ref{fig:faro_pipeline} shows an example of a \faro pipeline describing the measurement stage of the computation of three performance metrics  using a per-tract matched catalog analysis context.
+Pipelines can be built hierarchically, with a high-level pipeline calling lower-level pipelines, as shown in figure \ref{fig:faro_pipeline_hierarchy}.
+
+\begin{figure}[h]
+  \lstset{language=YAML}
+  \begin{lstlisting}
+description: Compute metrics from matched catalogs
+tasks:
+  PA1:
+    class: lsst.faro.measurement.TractMatchedMeasurementTask
+    config:
+      connections.package: validate_drp
+      connections.metric: PA1
+      python: |
+        from lsst.faro.measurement import PA1Task
+        config.measure.retarget(PA1Task)
+  PF1_design:
+    class: lsst.faro.measurement.TractMatchedMeasurementTask
+    config:
+      connections.package: validate_drp
+      connections.metric: PF1_design_gri
+      python: |
+        from lsst.faro.measurement import PF1Task
+        config.measure.retarget(PF1Task)
+        config.measure.threshPA2 = 15.0
+  AM1:
+    class: lsst.faro.measurement.TractMatchedMeasurementTask
+    config:
+      connections.package: validate_drp
+      connections.metric: AM1
+      python: |
+        config.connections.matchedCatalog = 'matchedCatalogTractMag17to21p5'
+        from lsst.faro.measurement import AMxTask
+        config.measure.retarget(AMxTask)
+        config.measure.annulus_r = 5.0
+    \end{lstlisting}
+  \caption{A \faro pipeline describing the measurement stage of the computation of three performance metrics per-tract from matched catalogs.}
+  \label{fig:faro_pipeline}
+\end{figure}
+
+\begin{figure}[h]
+  \lstset{language=YAML}
+  \begin{lstlisting}
+description: Complete metrics measurement pipeline
+imports:
+  # Photometric and astrometric repeatability:
+  - location: $FARO_DIR/pipelines/metrics_pipeline_matched.yaml
+  # Astrometry relative to a reference band:
+  - location: $FARO_DIR/pipelines/metrics_pipeline_matched_multi.yaml
+  # Ellipticity residual correlations, visit-level:
+  - location: $FARO_DIR/pipelines/metrics_pipeline_visit.yaml
+  # Ellipticity residual correlations, coadds:
+  - location: $FARO_DIR/pipelines/metrics_pipeline_tract.yaml
+  # Stellar locus width:
+  - location: $FARO_DIR/pipelines/metrics_pipeline_tract_multi.yaml
+    \end{lstlisting}
+  \caption{A  \faro pipeline showing how pipelines for pre-defined groups of metrics, repeatability metrics or visit-level metrics can be called hierarchically.}
+  \label{fig:faro_pipeline_hierarchy}
+\end{figure}
 
 \section{Adding a  Metric} \label{sec:add}
 
