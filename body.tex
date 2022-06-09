@@ -182,9 +182,40 @@ class NumSourcesTask(Task):
 
 \subsection{Monitoring Science Pipelines Performance} \label{ssec:monitoring}
 
+\faro is used to monitor the scientific performance of the LSST science pipelines on precursor datasets of different sizes and on a variety of cadences\cite{dmtn-091}. 
+By tracking metrics computed on the outputs of evolving versions of the science pipelines using a fixed dataset we can rapidly identify the effect of code or configuration changes on the data products as development progresses during the LSST construction period.
+
 \subsubsection{Precursor datasets} \label{sssec:datasets}
 
 \subsubsection{Continuous Integration}\label{sssec:ci}
+
+The LSST Science pipelines are run nightly and weekly on the \rctwosubset dataset in the LSST Jenkins-based continuous integration (CI) system. 
+\faro pipelines are run on the outputs in a per-visit or per-detector analysis context.
+Given the small size of the dataset, there are not enough statistics to compute metrics on a per-tract level 
+The goal is to track daily the performance of the pipelines, the quality of the data products, and to rapidly identify the effect of code or configuration changes on the data products as development progresses during the LSST construction period.
+Figure \ref{fig:ci_metrics} shows an example of two metrics that are tracked and how they were used to identify the effect of a software change.
+Metrics are reviewed regularly allowing us to identify changes and understand the impact of changes in the science pipelines.
+\begin{figure}[htb]
+\begin{subfigure}{.5\textwidth}
+    \includegraphics[width=0.98\textwidth]{figures/ci_metric_AM1_5}
+\end{subfigure}%
+\begin{subfigure}{.5\textwidth}
+    \includegraphics[width=0.98\textwidth]{figures/ci_metric_TE1}
+\end{subfigure}
+\par\medskip % force a bit of vertical whitespace
+\begin{subfigure}{.5\textwidth}
+    \includegraphics[width=0.98\textwidth]{figures/ci_metric_AM1_20}
+     \caption[\small]{(a) Astrometric precision metrics}
+\end{subfigure}%
+\begin{subfigure}{.5\textwidth}
+    \includegraphics[width=0.98\textwidth]{figures/ci_metric_TE2}
+    \caption[\small]{(b) Residual PSF ellipticity correlation metrics}
+\end{subfigure}
+\par\medskip % force a bit of vertical whitespace
+\caption[short]{Examples of the time evolution of four \faro metrics computed on a nightly cadence in CI over a period of one month on the outputs of the nightly data release processing of a small subset of the HSC PDR2 dataset.  
+Left shows the AM1 metric that characterizes the astrometric scatter on two different spatial scales, 5 and 20 arcmins, and right shows the residual PSF ellipticity correlations, TE1 and TE2. }
+\label{fig:ci_metrics}
+\end{figure}
 
 \subsubsection{Software Release Characterization } \label{sssec:characterization}
 
@@ -192,7 +223,7 @@ Major releases of the LSST science pipelines are made approximately once every s
 Every major release is accompanied by a Characterization Metric Report, which describes the scientific performance of the release by computing \faro metrics on the HSC RC2 precursor dataset. 
 The report compares values of metrics computed on the same dataset with a) those computed using the previous release and b) the LSST SRD design specifications.  
 Such a report allows us to monitor the effects of major strategic developments in algorithms over longer periods of time. 
-Figure \ref{fig:cmr-r23} shows an excerpt from the Characterization Metric Report \cite{dmtr-351} for the most recent release of the LSST science pipelines, Release 23.0.1.
+Figure \ref{fig:cmr_r23} shows an excerpt from the Characterization Metric Report \cite{dmtr-351} for the most recent release of the LSST science pipelines, Release 23.0.1.
 From this excerpt, we see that there were improvements in the photometry and ellipticity correlation metrics as compared to the previous release, which reflect improvements in the photometric calibration algorithms to better handle fields of view near the spatial edges of survey footprints. 
 \begin{figure}[h]
   \centering
