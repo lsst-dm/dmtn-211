@@ -62,12 +62,10 @@ The following analysis, corresponding to analysis contexts  are currently suppor
 \subsection{Base Classes} \label{ssec:baseclasses}
 
 \faro provides a set of base classes corresponding to the various analysis contexts described above that use the \texttt{PipelineTask} framework to build a quantum graph\footnote{A data structure that represents a concrete workflow generated from a Pipeline.} and interact with Butler for data i/o.
-The primary base classes in the lsst.faro package are \texttt{CatalogMeasurementBaseConnections}, \texttt{CatalogMeasurementBaseConfig}, and \texttt{CatalogMeasurementBaseTask}, each of which inherits from  \texttt{MetricConnections}, \texttt{MetricConfig}, and \texttt{MetricTask}, in the \texttt{lsst.verify} package respectively, and adds additional general functionality for computing science performance metrics based on Source and Object catalog inputs. 
-This structure follows the general pattern adopted in the Science Pipelines of using PipelineTaskConnections to define the desired IO, PipelineTaskConfig to provide configuration, and PipelineTask to run an algorithm on input data and store output data in a data butler.
-The base classes abstract away the data i/o, leaving the scientist free to focus on the algorithmic details relevant to their particular analysis. 
-Once the analysis context base class is defined, developers can implement metrics by creating a dedicated \texttt{Task} that will operate on in-memory python objects. 
-Unlike many other \texttt{Task}s  in the LSST science pipelines, such as fitting a WCS or detecting sources on an image, \texttt{Task}s for metric computation with \faro work with in-memory python objects.
-The base classes for the various analysis contexts are located in the \texttt{python/lsst/faro/measurement} directory.
+The base classes abstract away the data i/o, leaving the scientist free to focus on the algorithmic details  relevant to their particular analysis. 
+The primary base classes in the lsst.faro package are \texttt{CatalogMeasurementBaseConnections}, to define the desired i/o,  \texttt{CatalogMeasurementBaseConfig}, to provide the configuration, and \texttt{CatalogMeasurementBaseTask}, to run the algorithm and store teh output data in the Butler. 
+Each of these base classes inherits from \texttt{MetricConnections}, \texttt{MetricConfig}, and \texttt{MetricTask}, in the \texttt{lsst.verify} package respectively, and adds additional general functionality for computing science performance metrics based on Source and Object catalog inputs. 
+Additional base classes can be easily added following this scheme for new analysis contexts. 
 
 \subsection{Stages of Metric Computation} \label{ssec:stages}
 
