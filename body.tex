@@ -148,6 +148,7 @@ imports:
   \label{fig:faro_pipeline_hierarchy}
 \end{figure}
 
+
 Pipelines, configurations in the form of YAML files, are used to define the \faro metrics to be computed together with the  detailed execution parameters for metric calculations. 
 The \faro package provides a set of pre-defined pipelines, defined per analysis context, for many common configurations of computing metrics. 
 \faro pipelines can be run as an after burner to the LSST Science Pipelines or can be interspersed with science pipelines processing to compute , as long as the necessary input data products have been computed and are stored in the Butler.  
@@ -266,6 +267,7 @@ class NumSourcesTask(Task):
   \par\medskip
 \end{figure}
 
+<<<<<<< HEAD
 \section{Tracking and Visualization} \label{sec:tracking}
 
 We visualise and track the time evolution of \faro metrics using the LSST metrics dashboard, \squash\cite{SQR-009}. 
@@ -286,6 +288,8 @@ Figure \ref{fig:squash_metrics_ci} shows the dashboard for \faro metrics compute
 \end{figure}
 
 
+=======
+>>>>>>> WIP
 \section{Faro Applications} \label{sec:applications}
 
 \subsection{Monitoring Science Pipelines Performance} \label{ssec:monitoring}
@@ -327,6 +331,7 @@ Left shows the AM1 metric that characterizes the astrometric scatter on two diff
 \subsubsection{Software Release Characterization } \label{sssec:characterization}
 
 Major releases of the LSST science pipelines are made approximately once every six months. 
+<<<<<<< HEAD
 Every major release is accompanied by a Characterization Metric Report, which describes the scientific performance of the release by computing \faro metrics on the full HSC RC2 dataset. 
 HSC RC2 consists of 3 tracts of data taken and selected to provide a means of testing various pathological cases e.g., difficult astrometric solutions, extremely good seeing that does not provide a well-sampled PSF, difficult fields for deblending, and large galaxies, among others. 
 These three tracts each contain between 112--149 visits split between the HSC-G, HSC-R, HSC-I, HSC-Z, and HSC-Y (grizy) filters.
@@ -336,6 +341,14 @@ Figure \ref{fig:cmr_r23} shows an excerpt from the Characterization Metric Repor
 From this excerpt, we see that there were improvements in the photometry and ellipticity correlation metrics as compared to the previous release, which reflect improvements in the photometric calibration algorithms to better handle fields of view near the spatial edges of survey footprints. 
 \begin{figure}[!ht]
 
+=======
+Every major release is accompanied by a Characterization Metric Report that describes the scientific performance of the release measured on the HSC RC2 precursor dataset. 
+All metrics reported therein are calculated using the \faro metric calculation package. 
+Figure \ref{fig:cmr-r23} shows an excerpt from the Characterization Metric Report \cite{dmtr-351} for the most recent release of the LSST science pipelines, Release 23.0.1.
+The report compares values of metrics computed on the same dataset with a) those computed using the previous release and b) the LSST SRD design specifications.  
+
+\begin{figure}[h]
+>>>>>>> WIP
   \centering
   \includegraphics[width=0.45\textwidth]{figures/cmr_r23_photometric_metrics} 
   \hspace{0.5cm}
@@ -388,6 +401,7 @@ The following are examples of metrics that could be implemented in \faro to supp
 
 \subsection{Rubin Data Previews} \label{ssec:datapreviews}
 
+<<<<<<< HEAD
 During the period leading up to the start of operations in 2024, Rubin Observatory will deliver a series of three Data Previews to the community. 
 The goals of these Data Previews are twofold, to serve as an early integration test of the LSST Science Pipelines and the Rubin Science Platform (RSP)\footnote{A set of integrated web applications and services deployed at Rubin Data Access Centers (DACs) through which the scientific community will access, visualize, subset and perform next-to-the-data analysis of LSST Data products.} \cite{lse-319}, and to enable a limited number of scientists to begin early preparations for science with the LSST.
 All  Rubin Data Previews are hosted at the Interim Data Facility (IDF) on Google cloud\cite{2021arXiv211115030O}.
@@ -415,6 +429,28 @@ Figure \ref{fig:faro_dp02_distr} shows distributions of some of the performance 
 \label{fig:faro_dp02_distr}
 \end{figure}
 
+=======
+\section{Tracking and Visualization} \label{sec:tracking}
+
+We visualise and track the time evolution of \faro metrics using the LSST metrics dashboard, \squash\cite{SQR-009}. 
+\squash makes use of the InfluxDB\footnote{\url{https://www.influxdata.com/}} time series database as the backend store for time-stamped metrics and the Chronograf\footnote{\url{https://www.influxdata.com/time-series-platform/chronograf/}} user interface.
+InfluxDB is designed to store large volumes of time series data and quickly perform real-time analysis on that data.
+Chronograf provides dashboards to easily visualise and track metrics stored in InfluxDB. 
+Metrics computed by \faro on the outputs of the LSST Science Pipelines are stored in the Butler and then pushed to the \squash using  the InfluxDB REST AP
+From the Chronograf UI, the user can query the metric values, aggregate results and create alerts when measured metrics change or go out of specification. 
+By tracking metric measurements we are able to understand trends in the algorithmic performance of the LSST Science Pipelines, and ultimately verify that we will meet our requirements.
+We have configured a number of dashboards for tracking \faro metics computed on various precursor datasets at different cadences, e.g nightly, monthly, etc. 
+Figure \ref{fig:squash_metrics_ci} shows the dashboard for \faro metrics computed on the nightly CI dataset (\S \ref{sssec:datasets}. 
+
+\begin{figure}[h]
+  \includegraphics[width=0.95\textwidth]{figures/squash-dashboard-ci.png}
+  \par\medskip
+  \caption{InfluxDB/Chronograph dashboard}
+  \label{fig:squash_metrics_ci}
+\end{figure}
+
+
+>>>>>>> WIP
 \section{Current Status and Future Development} \label{sec:future}
 
 The \faro framework is released as part of the LSST Science Pipelines distribution and is running in 
@@ -425,6 +461,10 @@ A large number of the LSST SRD metrics have been implemented in \faro spanning a
 A next goal will be a strong focus on the needs of LSST commissioning and to support the implementation of ad-hoc metrics to understand the performance of the as-built system, in particular to provide near real-time feedback and monitoring of the quality of data taken on the mountain. 
 One indicator of the success of \faro is the steadily increasing number of active developers defining and implementing metics to characterize and diagnose performance and issues 
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> WIP
 \section{Conclusions} \label{sec:conclusions}
 
 In this paper, we have presented \faro, the LSST framework for automatically computing scalar performance metrics on the outputs of the LSST science pipelines. 
@@ -434,4 +474,7 @@ In addition to computing the normative science performance metrics on the LSST d
 The system is successfully running in nightly and weekly CI on precursor datasets to track the performance of the LSST science pipelines and provide regression analysis as development continues. 
 \faro has also been successfully demonstrated at scale with the reprocessing of the DESC DC2 dataset \cite{2021ApJS..253...31L} at the Rubin Interim Data Facility (IDF) running on Google cloud \cite{2021arXiv211115030O} in the context of Rubin Data Preview 0.2 (DP0.2)\cite{RTN-001}. 
 As we enter LSST commissioning, \faro will be a powerful tool to gain rapid insight into the quality of the data coming off the telescope. 
+<<<<<<< HEAD
 
+=======
+>>>>>>> WIP
