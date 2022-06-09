@@ -47,12 +47,13 @@ The following analysis, corresponding to analysis contexts  are currently suppor
 An analysis context defines the type of input data unit corresponding to the granularity of metric computation, e.g per-detector, per-visit, per-patch or per-tract.
 \faro supports metric calculation for a multiple analysis contexts, that is, the same mathematical function can be called in a different analysis context to produce a different metric value. 
 For example, the residual PSF ellipticity correlation metrics can be computed on a per-visit or per-tract analysis context. 
+
 For some metrics, only certain analysis contexts make sense and often the choice of analysis context will be dictated by statistics, e.g a small 1\degsq CI dataset may not contain enough data to compute some metrics on a per-tract level. 
 \faro allows users to easily define a new analysis contexts for their particular science need. 
 
 The following analysis, corresponding to analysis contexts  are currently supported in \faro:
 \begin{itemize}
-\item per-detector source catalogs i.e., single-visit detections
+\item per-detector source catalogs i.e., single-visit detectionsThanks.
 \item per-visit source catalogs i.e., single-visit detections
 \item per-patch object catalogs i.e., coadd detections both per-band and multi-band
 \item per-tract object catalogs i.e., coadd detections, both per-band and multi-band input
@@ -398,6 +399,11 @@ The following are examples of metrics that could be implemented in \faro to supp
 \item Effective survey depth
 \item Anomoly detection
 \end{itemize}
+During the period leading up to the start of operations in 2024, Rubin Observatory will deliver a series of three Data Previews to the community. 
+The goals of these Data Previews are twofold, to serve as an early integration test of the LSST Science Pipelines and the Rubin Science Platform (RSP)\footnote{A set of integrated web applications and services deployed at Rubin Data Access Centers (DACs) through which the scientific community will access, visualize, subset and perform next-to-the-data analysis of LSST Data products.} \cite{lse-319}, and to enable a limited number of scientists to begin early preparations for science with the LSST.
+All  Rubin Data Previews are hosted at the Interim Data Facility (IDF) on Google cloud\cite{2021arXiv211115030O} .
+
+\section{Tracking and Visualization} \label{sec:tracking}
 
 \subsection{Rubin Data Previews} \label{ssec:datapreviews}
 
