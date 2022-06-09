@@ -222,15 +222,33 @@ Finally, the new metric is added to the appropriate pipeline YAML file so that i
 Figures \ref{fig:num_sources_task} show an example of a non-normative metric \texttt{Task} written to compute the number of rows in an input Source or Object catalog, \texttt{NumSourcesTask}
 
 \begin{figure}[!htp]
+
   \lstset{language=python}
   \begin{lstlisting}
   
 class NumSourcesTask(Task):
 
+    r"""Simple default task to count the number of sources/objects in catalog."""
+
     ConfigClass = NumSourcesConfig
     _DefaultName = "numSourcesTask"
 
     def run(self, metricName, catalog, **kwargs):
+
+        """Run NumSourcesTask
+        Parameters
+        ----------
+        metricName : `str`
+            The name of the metric to measure.
+        catalog : `dict`
+            `lsst.afw.table` Catalog type
+        kwargs
+            Extra keyword arguments used to construct the task.
+        Returns
+        -------
+        measurement : `Struct`
+            The measured value of the metric.
+        """
         self.log.info("Measuring %s", metricName)
         if self.config.doPrimary:
             nSources = np.sum(catalog[self.config._getColumnName(
@@ -242,6 +260,7 @@ class NumSourcesTask(Task):
         return Struct(measurement=meas)    \end{lstlisting}
         
   \caption{Implementation of a simple task to count the number of Sources or Objects in an input catalog. }
+
   \label{fig:num_sources_task}
   \par\medskip
 \end{figure}
