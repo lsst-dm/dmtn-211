@@ -72,7 +72,7 @@ This enables us to promptly assess performance and take any corrective action ea
 Figure \ref{fig:faro_pipeline} shows an example of a \faro pipeline describing the measurement stage of the computation of three performance metrics  using a per-tract matched catalog analysis context.
 Pipelines can be built hierarchically, with a high-level pipeline calling lower-level pipelines, as shown in figure \ref{fig:faro_pipeline_hierarchy}.
 
-\begin{figure}[!htp]
+\begin{figure}[!ht]
   \lstset{language=YAML}
   \begin{lstlisting}
 description: Compute metrics from matched catalogs
@@ -99,7 +99,7 @@ tasks:
   \label{fig:faro_pipeline}
 \end{figure}
 
-\begin{figure}[!htp]
+\begin{figure}[!ht]
   \lstset{language=YAML}
   \begin{lstlisting}
 description: Complete metrics measurement pipeline
@@ -221,7 +221,7 @@ The Characterization Metric Report compares values of metrics computed on the HS
 This allows us to monitor the effects of major strategic developments in algorithms over longer periods of time. 
 Figure \ref{fig:cmr_r23} shows an excerpt from the Characterization Metric Report \cite{dmtr-351} for the most recent release of the LSST science pipelines, Release 23.0.1.
 From this excerpt, we see that there were improvements in the photometry and ellipticity correlation metrics as compared to the previous release, which reflect improvements in the photometric calibration algorithms to better handle fields of view near the spatial edges of survey footprints. 
-\begin{figure}[!htp]
+\begin{figure}[!ht]
   \centering
   \includegraphics[width=0.45\textwidth]{figures/cmr_r23_photometric_metrics} 
   \hspace{0.5cm}
@@ -242,13 +242,13 @@ This dataset is than sufficient to explore coadds, repeatability and optimize pr
 Single-visit science performance metrics including  were computed with \faro using data generated from the AuxTel Imaging Survey. 
 Figure \ref{fig:faro_auxtel_metrics} shows some of the performance metrics computed with \faro as part of the AuxTel imaging survey
 
-\begin{figure}[!htp]
+\begin{figure}[!ht]
 \begin{subfigure}{.5\textwidth}
-    \includegraphics[width=0.98\textwidth]{figures/rubin_romanesco}
+    \includegraphics[width=0.8\textwidth]{figures/rubin_romanesco}
      \caption[\small]{(a) AuxTel metric }
 \end{subfigure}%
 \begin{subfigure}{.5\textwidth}
-    \includegraphics[width=0.98\textwidth]{figures/rubin_romanesco}
+    \includegraphics[width=0.8\textwidth]{figures/rubin_romanesco}
     \caption[\small]{(b) AuxTel metric}
 \end{subfigure}
 \par\medskip % force a bit of vertical whitespace
