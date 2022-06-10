@@ -180,16 +180,6 @@ tasks:
         from lsst.faro.measurement import PF1Task
         config.measure.retarget(PF1Task)
         config.measure.threshPA2 = 15.0
-  AM1:
-    class: lsst.faro.measurement.TractMatchedMeasurementTask
-    config:
-      connections.package: validate_drp
-      connections.metric: AM1
-      python: |
-        config.connections.matchedCatalog = 'matchedCatalogTractMag17to21p5'
-        from lsst.faro.measurement import AMxTask
-        config.measure.retarget(AMxTask)
-        config.measure.annulus_r = 5.0
     \end{lstlisting}
   \caption{A \faro pipeline describing the measurement stage of the computation of three performance metrics per-tract from matched catalogs.}
   \label{fig:faro_pipeline}
@@ -211,7 +201,7 @@ imports:
   # Stellar locus width:
   - location: $FARO_DIR/pipelines/metrics_pipeline_tract_multi.yaml
     \end{lstlisting}
-  \caption{A  \faro pipeline showing how pipelines for pre-defined groups of metrics, repeatability metrics or visit-level metrics can be called hierarchically.}
+  \caption{A \faro pipeline showing how pipelines for pre-defined groups of metrics can be called hierarchically.}
   \label{fig:faro_pipeline_hierarchy}
 \end{figure}
 
@@ -232,6 +222,7 @@ Figures \ref{fig:num_sources_task} show an example of a non-normative metric \te
 class NumSourcesTask(Task):
 
     r"""Simple default task to count the number of sources/objects in catalog."""
+=======
 
     ConfigClass = NumSourcesConfig
     _DefaultName = "numSourcesTask"
@@ -252,6 +243,7 @@ class NumSourcesTask(Task):
         measurement : `Struct`
             The measured value of the metric.
         """
+
         self.log.info("Measuring %s", metricName)
         if self.config.doPrimary:
             nSources = np.sum(catalog[self.config._getColumnName(
@@ -278,12 +270,13 @@ Metrics computed by \faro on the outputs of the LSST Science Pipelines are store
 From the Chronograf UI, the user can query the metric values, aggregate results and create alerts when measured metrics change or go out of specification. 
 By tracking metric measurements we are able to understand trends in the algorithmic performance of the LSST Science Pipelines, and ultimately verify that we will meet our requirements.
 We have configured a number of dashboards for tracking \faro metics computed on various precursor datasets at different cadences, e.g nightly, monthly, etc. 
-Figure \ref{fig:squash_metrics_ci} shows the dashboard for \faro metrics computed on the nightly CI dataset (\S \ref{sssec:ci}). 
-\begin{figure}[!htp]
+
+Figure \ref{fig:squash_metrics_ci} shows the dashboard for \faro metrics computed on the nightly CI dataset (\S \ref{sssec:datasets}). 
+\begin{figure}[h]
   \par\medskip 
   \includegraphics[width=0.98\textwidth]{figures/squash-dashboard-ci.png}
   \par\medskip   
-  \caption{InfluxDB/Chronograph dashboard showing the time evolution of a sample of metrics computed as part of nightly CI on a small subset of the HSC RC2 dataset.}
+  \caption{InfluxDB/Chronograph dashboard}
   \label{fig:squash_metrics_ci}
 \end{figure}
 
@@ -387,23 +380,31 @@ This effect is readily seen in the PA1 metric calculation.
 \label{fig:faro_auxtel_metrics}
 \end{figure}
 
+The Rubin Auxiliary Telescope\cite{10.1117/12.2561112} (AuxTel) is a 1.2m f/18 telescope that sits adjacent to Rubin Observatory that will be measure atmospheric transmission using broadband spectroscopy of bright stars throughout survey operations. 
+During the commissioning AuxTel is also being used as a data processing pathfinder via a series of imaging surveys.
+The first AuxTel imaging campaign collected multiband data over a single field of high stellar density.
+An average of 10 visits per pointing within the 1 \degsq survey single field were collected. 
+The data was processed with LSST Science Pipelines, including measuring science performance metrics with \faro to provide near-realtime feedback to observers on the summit.
+This dataset is than sufficient to explore coadds, repeatability and optimize processing configurations.
+Single-visit science performance metrics including  were computed with \faro using data generated from the AuxTel Imaging Survey. 
+Figure \ref{fig:faro_auxtel_metrics} shows some of the performance metrics computed with \faro as part of the AuxTel imaging survey
+
+\begin{figure}[htb]
+\begin{subfigure}{.5\textwidth}
+    \includegraphics[width=0.98\textwidth]{figures/rubin_romanesco}
+     \caption[\small]{(a) AuxTel metric }
+\end{subfigure}%
+\begin{subfigure}{.5\textwidth}
+    \includegraphics[width=0.98\textwidth]{figures/rubin_romanesco}
+    \caption[\small]{(b) AuxTel metric}
+\end{subfigure}
+\par\medskip % force a bit of vertical whitespace
+\caption[short]{\color{red}AuxTel metrics ---- Erik/Peter what would you put here}
+\label{fig:faro_auxtel_metrics}
+\end{figure}
+
+
 \subsection{Rapid and first-look analysis} \label{ssec:rapid}
-
-During LSST observing, early analysis of the images coming off the camera will be carried out on the mountain on the timescales of a few minutes. 
-The following are examples of metrics that could be implemented in \faro to support this rapid first-look analysis:
-\begin{itemize}
-\item Number of detected Objects,
-\item Sky brightness, counts and variance 
-\item Image quality, specifically FWHM, PSF ellipticity
-\item Comparison to reference catalogs, e.g Gaia to look for an excess/deficit of detections, astrometric offsets, photometric residuals or problems with PSF modelling,
-\item Effective survey depth
-\item Anomoly detection
-\end{itemize}
-During the period leading up to the start of operations in 2024, Rubin Observatory will deliver a series of three Data Previews to the community. 
-The goals of these Data Previews are twofold, to serve as an early integration test of the LSST Science Pipelines and the Rubin Science Platform (RSP)\footnote{A set of integrated web applications and services deployed at Rubin Data Access Centers (DACs) through which the scientific community will access, visualize, subset and perform next-to-the-data analysis of LSST Data products.} \cite{lse-319}, and to enable a limited number of scientists to begin early preparations for science with the LSST.
-All  Rubin Data Previews are hosted at the Interim Data Facility (IDF) on Google cloud\cite{2021arXiv211115030O} .
-
-\section{Tracking and Visualization} \label{sec:tracking}
 
 \subsection{Rubin Data Previews} \label{ssec:datapreviews}
 
@@ -433,6 +434,23 @@ Figure \ref{fig:faro_dp02_distr} shows distributions of some of the performance 
 \caption[short]{Distributions of per-visit and per object metrics computed as part of the DP0.2 reprocessing and (b) shows a focal plane image with computed metrics overlayed Show object level and source level }
 \label{fig:faro_dp02_distr}
 \end{figure}
+
+During LSST observing, early analysis of the images coming off the camera will be carried out on the mountain on the timescales of a few minutes. 
+The following are examples of metrics that could be implemented in \faro to support this rapid first-look analysis:
+\begin{itemize}
+\item Number of detected Objects,
+\item Sky brightness, counts and variance 
+\item Image quality, specifically FWHM, PSF ellipticity
+\item Comparison to reference catalogs, e.g Gaia to look for an excess/deficit of detections, astrometric offsets, photometric residuals or problems with PSF modelling,
+\item Effective survey depth
+\item Anomoly detection
+\end{itemize}
+
+\subsection{Rubin Data Previews} \label{ssec:datapreviews}
+
+During the period leading up to the start of operations in 2024, Rubin Observatory will deliver a series of three Data Previews to the community. 
+The goals of these Data Previews are twofold, to serve as an early integration test of the LSST Science Pipelines and the Rubin Science Platform (RSP)\footnote{A set of integrated web applications and services deployed at Rubin Data Access Centers (DACs) through which the scientific community will access, visualize, subset and perform next-to-the-data analysis of LSST Data products.} \cite{lse-319}, and to enable a limited number of scientists to begin early preparations for science with the LSST.
+All  Rubin Data Previews are hosted at the Interim Data Facility (IDF) on Google cloud\cite{2021arXiv211115030O} .
 
 \section{Current Status and Future Development} \label{sec:future}
 
