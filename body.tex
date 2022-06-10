@@ -72,7 +72,7 @@ This enables us to promptly assess performance and take any corrective action ea
 Figure \ref{fig:faro_pipeline} shows an example of a \faro pipeline describing the measurement stage of the computation of three performance metrics  using a per-tract matched catalog analysis context.
 Pipelines can be built hierarchically, with a high-level pipeline calling lower-level pipelines, as shown in figure \ref{fig:faro_pipeline_hierarchy}.
 
-\begin{figure}[h]
+\begin{figure}[!htp]
   \lstset{language=YAML}
   \begin{lstlisting}
 description: Compute metrics from matched catalogs
@@ -99,7 +99,7 @@ tasks:
   \label{fig:faro_pipeline}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[!htp]
   \lstset{language=YAML}
   \begin{lstlisting}
 description: Complete metrics measurement pipeline
@@ -128,7 +128,7 @@ Once the analysis context and base class are defined, the metric can be implemen
 Finally, the new metric is added to the appropriate pipeline YAML file so that it can be run.
 Figures \ref{fig:num_sources_task} show an example of a non-normative metric \texttt{Task} written to compute the number of rows in an input Source or Object catalog, \texttt{NumSourcesTask}
 
-\begin{figure}[ht]
+\begin{figure}[!htp]
   \lstset{language=python}
   \begin{lstlisting}
   
@@ -163,8 +163,8 @@ Metrics computed by \faro on the outputs of the LSST Science Pipelines are store
 From the Chronograf UI, the user can query the metric values, aggregate results and create alerts when measured metrics change or go out of specification. 
 By tracking metric measurements we are able to understand trends in the algorithmic performance of the LSST Science Pipelines, and ultimately verify that we will meet our requirements.
 We have configured a number of dashboards for tracking \faro metics computed on various precursor datasets at different cadences, e.g nightly, monthly, etc. 
-Figure \ref{fig:squash_metrics_ci} shows the dashboard for \faro metrics computed on the nightly CI dataset (\S \ref{sssec:datasets}). 
-\begin{figure}[h]
+Figure \ref{fig:squash_metrics_ci} shows the dashboard for \faro metrics computed on the nightly CI dataset (\S \ref{sssec:ci}). 
+\begin{figure}[!htp]
   \par\medskip 
   \includegraphics[width=0.98\textwidth]{figures/squash-dashboard-ci.png}
   \par\medskip   
@@ -189,7 +189,7 @@ Given the small size of the dataset, there are not enough statistics to compute 
 The goal is to track daily the performance of the pipelines, the quality of the data products, and to rapidly identify the effect of code or configuration changes on the data products as development progresses during the LSST construction period.
 Figure \ref{fig:ci_metrics} shows an example of two metrics that are tracked and how they were used to identify the effect of a software change.
 Metrics are reviewed regularly allowing us to identify changes and understand the impact of changes in the science pipelines.
-\begin{figure}[htb]
+\begin{figure}[!htp]
 \begin{subfigure}{.5\textwidth}
     \includegraphics[width=0.98\textwidth]{figures/ci_metric_AM1_5}
 \end{subfigure}%
@@ -221,7 +221,7 @@ The Characterization Metric Report compares values of metrics computed on the HS
 This allows us to monitor the effects of major strategic developments in algorithms over longer periods of time. 
 Figure \ref{fig:cmr_r23} shows an excerpt from the Characterization Metric Report \cite{dmtr-351} for the most recent release of the LSST science pipelines, Release 23.0.1.
 From this excerpt, we see that there were improvements in the photometry and ellipticity correlation metrics as compared to the previous release, which reflect improvements in the photometric calibration algorithms to better handle fields of view near the spatial edges of survey footprints. 
-\begin{figure}[h]
+\begin{figure}[!htp]
   \centering
   \includegraphics[width=0.45\textwidth]{figures/cmr_r23_photometric_metrics} 
   \hspace{0.5cm}
@@ -242,7 +242,7 @@ This dataset is than sufficient to explore coadds, repeatability and optimize pr
 Single-visit science performance metrics including  were computed with \faro using data generated from the AuxTel Imaging Survey. 
 Figure \ref{fig:faro_auxtel_metrics} shows some of the performance metrics computed with \faro as part of the AuxTel imaging survey
 
-\begin{figure}[htb]
+\begin{figure}[!htp]
 \begin{subfigure}{.5\textwidth}
     \includegraphics[width=0.98\textwidth]{figures/rubin_romanesco}
      \caption[\small]{(a) AuxTel metric }
@@ -307,7 +307,6 @@ nightly and weekly CI builds on small representative CI datasets and on a a few 
 A large number of the LSST SRD metrics have been implemented in \faro spanning a range of analysis contexts; a near term focus will be on completing the implementation of these normative science performance metrics. 
 A next goal will be a strong focus on the needs of LSST commissioning and to support the implementation of ad-hoc metrics to understand the performance of the as-built system, in particular to provide near real-time feedback and monitoring of the quality of data taken on the mountain. 
 One indicator of the success of \faro is the steadily increasing number of active developers defining and implementing metics to characterize and diagnose performance and issues 
-
 
 \section{Conclusions} \label{sec:conclusions}
 
