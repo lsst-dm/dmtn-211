@@ -180,11 +180,10 @@ Figure \ref{fig:squash_metrics_ci} shows the dashboard for \faro metrics compute
 \faro is used to monitor the scientific performance of the LSST science pipelines on precursor datasets of different sizes and on a variety of cadences\cite{dmtn-091}. 
 By tracking metrics computed on the outputs of evolving versions of the science pipelines using a fixed dataset we can rapidly identify the effect of code or configuration changes on the data products as development progresses during the LSST construction period.
 
-\subsubsection{Precursor datasets} \label{sssec:datasets}
-
 \subsubsection{Continuous Integration}\label{sssec:ci}
 
-The LSST Science pipelines are run nightly and weekly on the \rctwosubset dataset in the LSST Jenkins-based continuous integration (CI) system. 
+The LSST Science pipelines are run nightly and weekly on a small subset of the Hyper Suprime-Camera (HSC) Release Candidate 2 (HSC RC2) dataset\footnote{\url{https://github.com/lsst-dm/rc2_subset}} in the LSST Jenkins-based continuous integration (CI) system. 
+This datasets consists of the central 6 detectors for 8 randomly chosen visits in the 5 broad band filters in the HSC COSMOS field, and was produced specifically for measuring metrics in a CI environment.
 \faro pipelines are run on the outputs in a per-visit or per-detector analysis context.
 Given the small size of the dataset, there are not enough statistics to compute metrics on a per-tract level 
 The goal is to track daily the performance of the pipelines, the quality of the data products, and to rapidly identify the effect of code or configuration changes on the data products as development progresses during the LSST construction period.
@@ -215,9 +214,11 @@ Left shows the AM1 metric that characterizes the astrometric scatter on two diff
 \subsubsection{Software Release Characterization } \label{sssec:characterization}
 
 Major releases of the LSST science pipelines are made approximately once every six months. 
-Every major release is accompanied by a Characterization Metric Report, which describes the scientific performance of the release by computing \faro metrics on the HSC RC2 precursor dataset. 
-The report compares values of metrics computed on the same dataset with a) those computed using the previous release and b) the LSST SRD design specifications.  
-Such a report allows us to monitor the effects of major strategic developments in algorithms over longer periods of time. 
+Every major release is accompanied by a Characterization Metric Report, which describes the scientific performance of the release by computing \faro metrics on the full HSC RC2 dataset. 
+HSC RC2 consists of 3 tracts of data taken and selected to provide a means of testing various pathological cases e.g., difficult astrometric solutions, extremely good seeing that does not provide a well-sampled PSF, difficult fields for deblending, and large galaxies, among others. 
+These three tracts each contain between 112--149 visits split between the HSC-G, HSC-R, HSC-I, HSC-Z, and HSC-Y (grizy) filters.
+The Characterization Metric Report compares values of metrics computed on the HSC RC2 dataset with a) those computed using the previous release of the science pipelines and b) the LSST SRD design specifications. 
+This allows us to monitor the effects of major strategic developments in algorithms over longer periods of time. 
 Figure \ref{fig:cmr_r23} shows an excerpt from the Characterization Metric Report \cite{dmtr-351} for the most recent release of the LSST science pipelines, Release 23.0.1.
 From this excerpt, we see that there were improvements in the photometry and ellipticity correlation metrics as compared to the previous release, which reflect improvements in the photometric calibration algorithms to better handle fields of view near the spatial edges of survey footprints. 
 \begin{figure}[h]
@@ -230,7 +231,7 @@ From this excerpt, we see that there were improvements in the photometry and ell
   \label{fig:cmr_r23}
 \end{figure}
 
-\subsection{Rubin Auxiliary Telescope} \label{ssec:auxtel}
+\subsection{Rubin Auxiliary Telescope Imaging Surveys} \label{ssec:auxtel}
 
 The Rubin Auxiliary Telescope\cite{10.1117/12.2561112} (AuxTel) is a 1.2m f/18 telescope that sits adjacent to Rubin Observatory that will be measure atmospheric transmission using broadband spectroscopy of bright stars throughout survey operations. 
 During the commissioning AuxTel is also being used as a data processing pathfinder via a series of imaging surveys.
@@ -272,7 +273,30 @@ The following are examples of metrics that could be implemented in \faro to supp
 
 During the period leading up to the start of operations in 2024, Rubin Observatory will deliver a series of three Data Previews to the community. 
 The goals of these Data Previews are twofold, to serve as an early integration test of the LSST Science Pipelines and the Rubin Science Platform (RSP)\footnote{A set of integrated web applications and services deployed at Rubin Data Access Centers (DACs) through which the scientific community will access, visualize, subset and perform next-to-the-data analysis of LSST Data products.} \cite{lse-319}, and to enable a limited number of scientists to begin early preparations for science with the LSST.
-All  Rubin Data Previews are hosted at the Interim Data Facility (IDF) on Google cloud\cite{2021arXiv211115030O} .
+All  Rubin Data Previews are hosted at the Interim Data Facility (IDF) on Google cloud\cite{2021arXiv211115030O}.
+
+Data Preview 0 (DP0) \cite{RTN-001} is the first of these three data previews.
+The data set adopted for DP0 is the DESC 300 \degsq catalog of simulated LSST-like images and catalogs generated by the Dark Energy Science Collaboration (DESC) for their Data Challenge 2 (DC2)\cite{2021ApJS..253...31L}.
+As part of the second phase of Data Preview 0, DP0.2, the DESC DC2 simulated images were reprocessed by Release 23 of the LSST Science Pipelines, and released to the community on 7 July 2022. 
+\faro pipelines were run as part of the DP0.2 reprocessing, interspersed with the DRP pipelines to compute performance metrics. 
+Figure \ref{fig:faro_dp02_distr} shows distributions of some of the performance metrics computed as part of DP0.2.
+\begin{figure}[!htp]
+\begin{subfigure}{.5\textwidth}
+    \includegraphics[width=0.98\textwidth]{figures/dp02_am1_alltracts_gri}
+\end{subfigure}%
+\begin{subfigure}{.5\textwidth}
+    \includegraphics[width=0.98\textwidth]{figures/dp02_am1_alltracts_uzy}
+\end{subfigure}
+\begin{subfigure}{.5\textwidth}
+    \includegraphics[width=0.98\textwidth]{figures/dp02_pa1_alltracts_gri}
+\end{subfigure}%
+\begin{subfigure}{.5\textwidth}
+    \includegraphics[width=0.98\textwidth]{figures/dp02_pa1_alltracts_uzy}
+\end{subfigure}
+\par\medskip % force a bit of vertical whitespace
+\caption[short]{Distributions of per-visit and per object metrics computed as part of the DP0.2 reprocessing and (b) shows a focal plane image with computed metrics overlayed Show object level and source level }
+\label{fig:faro_dp02_distr}
+\end{figure}
 
 \section{Current Status and Future Development} \label{sec:future}
 
