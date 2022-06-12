@@ -1,9 +1,16 @@
 \section{Introduction} \label{sec:intro}
 
-\ro's 10-year \lsst, scheduled to begin operations in 2024, will be the most ambitious and comprehensive optical astronomy survey ever undertaken\cite{2019ApJ...873..111I}
+\ro's \lsst, scheduled to begin operations in 2024, will be the most ambitious and comprehensive optical astronomy survey ever undertaken\cite{2019ApJ...873..111I}.
+The LSST will  image the entire visible sky twice each week for 10 years, resulting in a dataset that will comprise over 30 trillion observations of 40 billion astronomical sources.
+The science enabled by Rubin's LSST will be very broad, ranging from studies of small moving bodies in the solar system to the structure and evolution of the universe as a whole. 
 
-As  \ro moves into the final stages of construction and begins to prepare for operations in 2024, significant effort is being placed on understanding the performance of the as-built system and the quality of the science-ready data products it will deliver. 
-\faro is an open-source python framework that computes scalar performance metrics on the outputs of the LSST science pipelines. 
+Achieving the ambitious science goals of LSST requires an unprecedented survey dataset and a comprehensive understanding of the survey performance. 
+The LSST Science Requirements document (SRD)\cite{LPM-17} defines at set of ``normative'', science performance metrics that describe the quality of the LSST data products needed to meet these goals. 
+By defining, measuring and tracking science performance metrics, we are able to easily and rapidly assess performance, identify changes, problems or regressions, and take timely action to ensure the survey stays on track to achieve its goals.
+As \ro moves into the final stages of construction and begins to prepare for operations, significant effort is being placed on understanding the performance of the as-built system and the quality of the science-ready data products it will deliver.
+
+\faro is an open-source python framework, distributed as part of the LSST science pipelines\cite{2019ASPC..523..521B,2018PASJ...70S...5B}.
+ that computes scalar performance metrics on the outputs of the LSST science pipelines. 
 If provides a customizable, and easily-extensible set of tools to:
 \begin{itemize}
 \item Generate artefacts to verify the normative science performance metrics detailed in the LSST SRD, 
@@ -11,7 +18,6 @@ If provides a customizable, and easily-extensible set of tools to:
 \item Monitor performance, carry out regression analysis, and characterization of the LSST science pipelines, 
 \item Providing a``first-look'' data quality analysis capability to inform observatory operations. 
 \end{itemize}
-\faro is distributed as part of the Rubin Observatory LSST Science Pipelines software distribution \cite{2019ASPC..523..521B,2018PASJ...70S...5B,Bosch_2017}.
 
 
 \section{The Faro Framework} \label{sec:faro}
