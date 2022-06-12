@@ -9,7 +9,7 @@ The LSST Science Requirements document (SRD)\cite{LPM-17} defines at set of ``no
 By defining, measuring and tracking science performance metrics, we are able to easily and rapidly assess performance, identify changes, problems or regressions, and take timely action to ensure the survey stays on track to achieve its goals.
 As \ro moves into the final stages of construction and begins to prepare for operations, significant effort is being placed on understanding the performance of the as-built system and the quality of the science-ready data products it will deliver.
 
-\faro is an open-source python framework, distributed as part of the LSST science pipelines\cite{2019ASPC..523..521B,2018PASJ...70S...5B}.
+\faro\footnote{\url{https://github.com/lsst/faro}} is an open-source python framework, distributed as part of the LSST science pipelines\cite{2019ASPC..523..521B,2018PASJ...70S...5B}.
  that computes scalar performance metrics on the outputs of the LSST science pipelines. 
 If provides a customizable, and easily-extensible set of tools to:
 \begin{itemize}
@@ -19,12 +19,10 @@ If provides a customizable, and easily-extensible set of tools to:
 \item Providing a``first-look'' data quality analysis capability to inform observatory operations. 
 \end{itemize}
 
-
 \section{The Faro Framework} \label{sec:faro}
 
-\faro has adopted a modular and extensible design that can be configured  to run any subset of metrics on any subset of data products, e.g., a  subset of the realtime metrics computed on a single exposure. 
 Two main components form the basis of the \faro framework;  a collection of \texttt{Task}s that compute specific metric values, and a set of base classes that handle data i/o for various types of input data units corresponding to the granularity of metric computation, e.g., per-detector, per-visit, per-patch, per-tract. 
-\faro builds upon much of the existing infrastructure of the LSST Science Pipelines, in particular the ``Generation 3'' middleware, including the Data Butler and Task Framework\footnote{\url{https://pipelines.lsst.io/modules/lsst.pipe.base/task-framework-overview.html}}\cite{dmtn-229}, and the LSST verification framework\cite{SQR-019}. 
+\faro builds upon much of the existing infrastructure of the LSST Science Pipelines, in particular the ``Generation 3'' middleware, including the Data Butler and Task Framework, and the LSST verification framework\cite{SQR-019}. 
 The LSST Data Butler (hereafter the ``Butler'') provides an abstracted data access interface that is used to read and write data without having to know the details of file formats or locations.
 The Butler organizes data, both raw and processed, into data repositories.
 A \texttt{Task} is a reusable unit of code in the LSST science pipelines infrastructure that is used to process data.
@@ -37,6 +35,7 @@ The LSST Verification Framework, \texttt{lsst.verify}, is a framework for making
 The resulting metric values
 % \footnote{The result of computing a given metric on some set dataset.} 
 are persisted in the same Butler repository alongside the input data products, each with an associated searchable data identifier\footnote{A dict-like identifier for data usable across multiple Butler collections and DatasetTypes.} as \texttt{lsst.verify.Measurement} objects.
+\faro has adopted a modular and extensible design that can be configured  to run any subset of metrics on any subset of data products, e.g., a  subset of the realtime metrics computed on a single exposure. 
 
 \subsection{Analysis Contexts} \label{ssec:analysis_context}
 
