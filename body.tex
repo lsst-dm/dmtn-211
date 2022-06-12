@@ -1,5 +1,17 @@
 \section{Introduction} \label{sec:intro}
 
+\ro's 10-year \lsst, scheduled to begin operations in 2024, will be the most ambitious and comprehensive optical astronomy survey ever undertaken\cite{2019ApJ...873..111I}
+
+As  \ro moves into the final stages of construction and begins to prepare for operations in 2024, significant effort is being placed on understanding the performance of the as-built system and the quality of the science-ready data products it will deliver. 
+\faro is an open-source python framework that computes scalar performance metrics on the outputs of the LSST science pipelines. 
+If provides a customizable, and easily-extensible set of tools to:
+\begin{itemize}
+\item Generate artefacts to verify the normative science performance metrics detailed in the LSST SRD, 
+\item Compute additional non-normative metrics for science validation, 
+\item Monitor performance, carry out regression analysis, and characterization of the LSST science pipelines, 
+\item Providing a``first-look'' data quality analysis capability to inform observatory operations. 
+\end{itemize}
+\faro is distributed as part of the Rubin Observatory LSST Science Pipelines software distribution \cite{2019ASPC..523..521B,2018PASJ...70S...5B,Bosch_2017}.
 
 \section{The Faro Framework} \label{sec:faro}
 
@@ -465,7 +477,7 @@ The \faro framework is released as part of the LSST Science Pipelines distributi
 nightly and weekly CI builds on small representative CI datasets and on a a few tracts of HSC and DESC DC2 data to track the performance of the LSST Science Pipelines. 
 \faro is used to produce a detailed Characterization Metric Report for major 6-monthly releases of the pipelines. 
 \faro is starting to be used to characterize the performance of preliminary data from the Rubin Auxiliary Telescope imaging campaigns and was successfully run as at scale on the outputs of the Rubin Operations Data Preview 0.2 processing of the DESC DC2 300 \degsq dataset.
-A large number of the LSST SRD metrics have been implemented in \faro spanning a range of analysis contexts; a near term focus will be on completing the implementation of these normative science performance metrics. 
+A large number of the LSST SRD metrics have been implemented in \faro spanning a range of analysis contexts; a near term focus will be on completing the implementation of the normative science performance metrics. 
 A next goal will be a strong focus on the needs of LSST commissioning and to support the implementation of ad-hoc metrics to understand the performance of the as-built system, in particular to provide near real-time feedback and monitoring of the quality of data taken on the mountain. 
 One indicator of the success of \faro is the steadily increasing number of active developers defining and implementing metics to characterize and diagnose performance and issues 
 
