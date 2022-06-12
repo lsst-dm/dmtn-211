@@ -9,11 +9,10 @@ The LSST Science Requirements document (SRD)\cite{LPM-17} defines at set of ``no
 By defining, measuring and tracking science performance metrics, we are able to easily and rapidly assess performance, identify changes, problems or regressions, and take timely action to ensure the survey stays on track to achieve its goals.
 As \ro moves into the final stages of construction and begins to prepare for operations, significant effort is being placed on understanding the performance of the as-built system and the quality of the science-ready data products it will deliver.
 
-\faro\footnote{\url{https://github.com/lsst/faro}} is an open-source python framework, distributed as part of the LSST science pipelines\cite{2019ASPC..523..521B,2018PASJ...70S...5B}.
- that computes scalar performance metrics on the outputs of the LSST science pipelines. 
+\faro\footnote{\url{https://github.com/lsst/faro}} is an open-source python framework, distributed as part of the LSST science pipelines\cite{2019ASPC..523..521B,2018PASJ...70S...5B} that computes scalar performance metrics on the outputs of the LSST science pipelines. 
 If provides a customizable, and easily-extensible set of tools to:
 \begin{itemize}
-\item Generate artefacts to verify the normative science performance metrics detailed in the LSST SRD, 
+\item Generate artefacts to verify the normative science performance metrics detailed in the LSST Science Requirements document, 
 \item Compute additional non-normative metrics for science validation, 
 \item Monitor performance, carry out regression analysis, and characterization of the LSST science pipelines, 
 \item Providing a``first-look'' data quality analysis capability to inform observatory operations. 
@@ -22,7 +21,7 @@ If provides a customizable, and easily-extensible set of tools to:
 \section{The Faro Framework} \label{sec:faro}
 
 Two main components form the basis of the \faro framework;  a collection of \texttt{Task}s that compute specific metric values, and a set of base classes that handle data i/o for various types of input data units corresponding to the granularity of metric computation, e.g., per-detector, per-visit, per-patch, per-tract. 
-\faro builds upon much of the existing infrastructure of the LSST Science Pipelines, in particular the ``Generation 3'' middleware, including the Data Butler and Task Framework, and the LSST verification framework\cite{SQR-019}. 
+\faro builds upon much of the existing infrastructure of the LSST Science Pipelines, in particular the ``Generation 3'' middleware, including the Data Butler and Task Framework\cite{dmtn-229}, and the LSST verification framework\cite{SQR-019}. 
 The LSST Data Butler (hereafter the ``Butler'') provides an abstracted data access interface that is used to read and write data without having to know the details of file formats or locations.
 The Butler organizes data, both raw and processed, into data repositories.
 A \texttt{Task} is a reusable unit of code in the LSST science pipelines infrastructure that is used to process data.
