@@ -87,7 +87,7 @@ The \faro package provides a set of pre-defined pipelines, defined per analysis 
 For example, all single-visit metrics can already be computed once the single-frame processing steps have completed. 
 This enables us to promptly assess performance and take any corrective action early. 
 Figure \ref{fig:faro_pipeline} shows an example of a \faro pipeline describing the measurement stage of the computation of three performance metrics  using a per-tract matched catalog analysis context.
-Pipelines can be built hierarchically, with a high-level pipeline calling lower-level pipelines, as shown in figure \ref{fig:faro_pipeline_hierarchy}.
+Pipelines can be built hierarchically, with a high-level pipeline calling lower-level pipelines.
 
 \begin{figure}[!ht]
   \lstset{language=YAML}
@@ -114,26 +114,6 @@ tasks:
     \end{lstlisting}
   \caption{A \faro pipeline describing the measurement stage of the computation of three performance metrics per-tract from matched catalogs.}
   \label{fig:faro_pipeline}
-\end{figure}
-
-\begin{figure}[!ht]
-  \lstset{language=YAML}
-  \begin{lstlisting}
-description: Complete metrics measurement pipeline
-imports:
-  # Photometric and astrometric repeatability:
-  - location: $FARO_DIR/pipelines/metrics_pipeline_matched.yaml
-  # Astrometry relative to a reference band:
-  - location: $FARO_DIR/pipelines/metrics_pipeline_matched_multi.yaml
-  # Ellipticity residual correlations, visit-level:
-  - location: $FARO_DIR/pipelines/metrics_pipeline_visit.yaml
-  # Ellipticity residual correlations, coadds:
-  - location: $FARO_DIR/pipelines/metrics_pipeline_tract.yaml
-  # Stellar locus width:
-  - location: $FARO_DIR/pipelines/metrics_pipeline_tract_multi.yaml
-    \end{lstlisting}
-  \caption{A \faro pipeline showing how pipelines for pre-defined groups of metrics can be called hierarchically.}
-  \label{fig:faro_pipeline_hierarchy}
 \end{figure}
 
 \section{Adding a  Metric} \label{sec:add}
@@ -277,12 +257,11 @@ Figure \ref{fig:faro_auxtel_metrics} shows the PA1 metric values for each bandpa
 During LSST observing, early analysis of the images coming off the camera will be carried out on the mountain on the timescales of a few minutes. 
 The following are examples of metrics that could be implemented in \faro to support this rapid first-look analysis:
 \begin{itemize}
-\item Number of detected Objects,
 \item Sky brightness, counts and variance 
 \item Image quality, specifically FWHM, PSF ellipticity
 \item Comparison to reference catalogs, e.g Gaia to look for an excess/deficit of detections, astrometric offsets, photometric residuals or problems with PSF modelling,
 \item Effective survey depth
-\item Anomoly detection
+\item Anomaly detection
 \end{itemize}
 
 \subsection{Rubin Data Previews} \label{ssec:datapreviews}
