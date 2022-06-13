@@ -1,58 +1,124 @@
+% Submit a 4-page-minimum manuscript, by the advertised due date, for publication in the Proceedings of SPIE in the SPIE Digital Library
 \documentclass[]{spie}
-%\documentclass[a4paper]{spie}  %>>> use this instead for A4 paper
-%\documentclass[nocompress]{spie}  %>>> to avoid compression of citations
-
-\renewcommand{\baselinestretch}{1.0} % Change to 1.65 for double spacing
-
-\usepackage{amsmath,amsfonts,amssymb}
-\usepackage{graphicx}
-\usepackage{rotating}
-\usepackage{multicol}
-\usepackage[colorlinks=true, allcolors=blue]{hyperref}
-\usepackage{longtable}
-\usepackage[english,iso]{isodate}
-
-% lsstdoc documentation: https://lsst-texmf.lsst.io/lsstdoc.html
 \input{meta}
 
 % Package imports go here.
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage{graphicx}
+\usepackage[colorlinks=true, allcolors=blue, backref=page]{hyperref}
+\usepackage{xspace}
+\usepackage{longtable}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{todonotes}
+\usepackage{subcaption}
+\captionsetup[subfigure]{labelformat=empty}
 
 % Local commands go here.
-
-\date{\today}
-
-\input{authors}
-
-\title{Faro: A framework for measuring the scientific performance of petascale Rubin Observatory data products}
+\newcommand{\apj}{ApJ}
+\newcommand{\apjs}{ApJS}
+\newcommand{\procspie}{Proc.\ SPIE}
+\newcommand{\pasj}{PASJ}
+\newcommand{\degsq}{deg$^2$\xspace}
+\newcommand{\faro}{\texttt{faro}\xspace}
+\newcommand{\validatedrp}{\texttt{validate\_drp}\xspace}
+\newcommand{\ro}{Rubin Observatory\xspace}
+\newcommand{\lsst}{Legacy Survey of Space and Time (LSST)\xspace}
+\newcommand{\squash}{SQuaSH\xspace}
+\newcommand{\rctwo}{\texttt{RC2}\xspace}
+\newcommand{\rctwosubset}{\texttt{RC2\_subset}\xspace}
+\renewcommand{\baselinestretch}{1.0} % Change to 1.65 for double spacing
+\renewcommand{\thefootnote}{\arabic{footnote}} % spie cls uses symbols and only 9 are allowed
+\newcommand\sq{\mbox{\rlap{$\sqcap$}$\sqcup$}}%
+\newcommand\arcdeg{\mbox{$^\circ$}}%
+\newcommand\arcmin{\mbox{$^\prime$}}%
+\newcommand\arcsec{\mbox{$^{\prime\prime}$}}%
 
 \newcommand{\docRef}{DMTN-211}
 \newcommand{\docUpstreamLocation}{\url{https://github.com/lsst-dm/dmtn-211}}
+\def\acronyms{\section*{ACRONYMS}\label{sec:acronyms}}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{farostyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=none,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+\lstset{style=farostyle}
+
+\newcommand\YAMLcolonstyle{\color{black}\mdseries}
+\newcommand\YAMLkeystyle{\color{magenta}\mdseries}
+\newcommand\YAMLvaluestyle{\color{codepurple}\mdseries}
+
+\lstdefinelanguage{YAML}{
+    keywords={true,false,null,y,n},
+    keywordstyle=\color{darkgray}\bfseries,
+    basicstyle=\YAMLkeystyle,                                 % assuming a key comes first
+    sensitive=false,
+    comment=[l]{\#},
+    morecomment=[s]{/*}{*/},
+    commentstyle=\color{black}\ttfamily,
+    stringstyle=\YAMLvaluestyle\ttfamily,
+    moredelim=[l][\color{black}]{\&},
+    moredelim=[l][\color{magenta}]{*},
+    moredelim=**[il][\YAMLcolonstyle{:}\YAMLvaluestyle]{:},   % switch to value style at :
+    morestring=[b]',
+    morestring=[b]",
+    literate =    {---}{{\ProcessThreeDashes}}3
+    {>}{{\textcolor{black}\textgreater}}1
+    {|}{{\textcolor{black}\textbar}}1
+    {\ -\ }{{\mdseries\ -\ }}3,
+}
+
+\title{Faro: A framework for measuring the scientific performance of petascale Rubin Observatory data products}
+\input{authors}
+\date{\today}
 
 % Option to view page numbers
-\pagestyle{empty} % change to \pagestyle{plain} for page numbers   
-\setcounter{page}{1} % Set start page numbering at e.g. 301
-	
+\pagestyle{plain} % change to \pagestyle{plain} for page numbers   
+%\setcounter{page}{301} % Set start page numbering at e.g. 301
+ 
 \begin{document}
 \maketitle
-%\hypersetup{pdftitle={\@title}, pdfauthor={\@author}, pdfkeywords={\@keywords}}
 
 \input{abstract}
+\keywords{Rubin Observatory, Legacy Survey of Space and Time, LSST, Data Management, Metric,  Verification}
 
-% Include a list of keywords after the abstract 
-\keywords{Rubin Observatory, LSST, performance characterization, verification}
+% The main body of text
 \input{body}
 
+%The appendices
 \appendix
-% Remove this when you start your paper
 %\input{appendix}
+
+\acknowledgments
+
+This material is based upon work supported in part by the National Science Foundation through Cooperative Agreement AST-1258333 and Cooperative Support Agreement AST-1202910 managed by the Association of Universities for Research in Astronomy (AURA), and the Department of Energy under Contract No. DE-AC02-76SF00515 with the SLAC National Accelerator Laboratory managed by Stanford University. 
+Additional Rubin Observatory funding comes from private donations, grants to universities, and in-kind support from LSSTC Institutional Members.
+
 % Include all the relevant bib files.
 % https://lsst-texmf.lsst.io/lsstdoc.html#bibliographies
-\section{References} \label{sec:bib}
 \bibliographystyle{spiebib}
-\bibliography{local,lsst,lsst-dm}
+\bibliography{local,lsst,lsst-dm,refs_ads,refs,books}
 
-% Make sure lsst-texmf/bin/generateAcronyms.py is in your path
-\section{Acronyms} \label{sec:acronyms}
+\acronyms 
 \input{acronyms.tex}
 
 \end{document}
