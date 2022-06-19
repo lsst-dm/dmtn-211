@@ -45,6 +45,8 @@ For example, the photometric and astrometric repeatability metrics and band-to-b
 For some metrics, only certain analysis contexts make sense, and often the choice of analysis context will be dictated by statistics, e.g., a small 1\degsq CI dataset may not contain enough data to compute some metrics on a per-tract level.
 \faro allows users to easily define new analysis contexts for their particular science needs.
 
+%Need to define what a detector, visit, tract, and patch are here. The following can really be reduced from 6 to 3 types: per-visit source catalogs, per-tract matched-visit source catalogs, and per-tract object catalogs. Detectors are a subdivision of a visit and patches are simply a spatial subdivision of a a tract
+
 The following analysis, corresponding to analysis contexts are currently supported in \faro:
 \begin{itemize}
 \item per-detector source catalogs, i.e., single-visit detections,
@@ -60,8 +62,9 @@ The following analysis, corresponding to analysis contexts are currently support
 \faro provides a set of base classes corresponding to the various analysis contexts described above that use the \texttt{PipelineTask} framework to build a quantum graph\footnote{A data structure that represents a concrete workflow generated from a Pipeline.} and interact with Butler for data i/o.
 The base classes abstract away the data i/o, leaving the scientist free to focus on the algorithmic details  relevant to their particular analysis.
 The primary base classes in the lsst.faro package are \texttt{CatalogMeasurementBaseConnections}, to define the desired i/o, \texttt{CatalogMeasurementBaseConfig}, to provide the configuration, and \texttt{CatalogMeasurementBaseTask}, to run the algorithm and store the output data in the Butler.
-Each of these base classes inherits from \texttt{MetricConnections}, \texttt{MetricConfig}, and \texttt{MetricTask}, in the \texttt{lsst.verify} package respectively, and adds additional general functionality for computing science performance metrics based on Source and Object catalog inputs. 
-Additional base classes can be easily added following this scheme for new analysis contexts. 
+Each of these base classes inherits from \texttt{MetricConnections}, \texttt{MetricConfig}, and \texttt{MetricTask}, in the \texttt{lsst.verify} package respectively, and adds additional functionality for computing science performance metrics based on Source and Object catalog inputs.
+%You mean additional subclasses can be added, right?
+Additional subclasses can be easily added following this scheme for new analysis contexts.
 
 \subsection{Stages of Metric Computation} \label{ssec:stages}
 
@@ -81,7 +84,8 @@ This final summary statistic characterizes the overall performance for the datas
 
 \subsection{Processing Pipelines} \label{ssec:pipelines}
 
-Pipelines, configurations in the form of YAML files, are used to define the \faro metrics to be computed together with the detailed execution parameters for metric calculations.
+% A sentence on what a Pipeline is: A Pipeline is  a collection of PipelineTasks that can be run in parallel or serial}
+Pipelines, specifications for collections of Tasks in the form of YAML files, are used to define the \faro metrics to be computed together with the detailed execution parameters for metric calculations.
 The \faro package provides a set of pre-defined pipelines, defined per analysis context, for many common configurations of computing metrics. 
 \faro pipelines can be run as an afterburner to the LSST Science Pipelines or can be interspersed with science pipelines processing to compute, as long as the necessary input data products have been computed and are stored in the Butler.
 For example, all single-visit metrics can already be computed once the single-frame processing steps have completed. 
@@ -119,6 +123,7 @@ tasks:
 \section{Adding a  Metric} \label{sec:add}
 
 We anticipate that many developers and scientists will want to define their own metrics specifically to address concerns that arise as LSST progresses through the construction phase and into operations.
+%Is it really true that the first step is defining an analysis-context. Maybe ``understand the analysis-context''? Because the metric itself is context-agnostic, and this first step is really just figuring when you want to run it?
 The first step in writing a new metric is to define the analysis context (\S \ref{ssec:analysis_context}) and to review the associated \texttt{Connections}, \texttt{Config}, and \texttt{Task} base classes (\S \ref{ssec:base_classes}) to understand the in-memory python objects that will be passed to the run method of the metric measurement task, and the configuration options.
 If the required analysis context and associated base class do not exist, they must first be created. 
 Once the analysis context and base class are defined, the metric can be implemented by creating a measurement \texttt{Task}, an instance of \texttt{lsst.pipe.base.Task} that will operate on in-memory python objects and compute the metric. 
@@ -258,10 +263,10 @@ During LSST observing, early analysis of the images coming off the camera will b
 The following are examples of metrics that could be implemented in \faro to support this rapid first-look analysis:
 \begin{itemize}
 \item Sky brightness, counts, and variance
-\item Image quality, specifically FWHM, PSF ellipticity
+\item PSF FWHM and PSF ellipticity
 \item Comparison to reference catalogs, e.g., Gaia to look for an excess/deficit of detections, astrometric offsets, photometric residuals, or problems with PSF modeling,
 \item Effective survey depth
-\item Anomaly detection
+\item Anomaly detection % too abstract compared to the other two concrete examples
 \end{itemize}
 
 \subsection{Rubin Data Previews} \label{ssec:datapreviews}
@@ -302,17 +307,17 @@ The vertical dashed lines show the LSST SRD design specifications. }
 \section{Current Status and Future Development} \label{sec:future}
 
 The \faro framework is released as part of the LSST Science Pipelines distribution and is running in 
-nightly and weekly CI builds on small representative CI datasets and on a few tracts of HSC and DESC DC2 data to track the performance of the LSST Science Pipelines.
+nightly CI builds on small representative CI datasets and on a few tracts of HSC and DESC DC2 data to track the performance of the LSST Science Pipelines.
 \faro is used to produce a detailed Characterization Metric Report for major 6-monthly releases of the pipelines. 
 \faro is starting to be used to characterize the performance of preliminary data from the Rubin Auxiliary Telescope imaging campaigns and was successfully run at scale on the outputs of the Rubin Operations Data Preview 0.2 processing of the DESC DC2 300 \degsq dataset.
-\comment{lol}
+
 Many LSST SRD metrics have been implemented in \faro spanning a range of analysis contexts; a near-term focus will be on completing the implementation of the normative science performance metrics.
 The next goal will focus on the needs of LSST commissioning and supporting the implementation of ad-hoc metrics to understand the performance of the as-built system, in particular, to provide near real-time feedback and monitoring of the quality of data taken on the mountain.
 One indicator of the success of \faro is the steadily increasing number of active developers defining and implementing metrics to characterize and diagnose performance and issues.
 
 \section{Conclusions} \label{sec:conclusions}
 
-\comment{This section could use a re-write}
+%This conclusion section could use a rewrite
 In this paper, we have presented \faro, the LSST framework for automatically computing scalar performance metrics on the outputs of the LSST science pipelines.
 
 We show that the development of a framework for the automated computation of metrics on a range of spatial and temporal scales makes this task easy and is critical to gain rapid insight into the performance of the developing system and address issues in a time manner and to help us to rapidly identify where to focus efforts of investigation to resolve and debug issues.
