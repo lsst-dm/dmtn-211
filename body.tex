@@ -53,7 +53,7 @@ The following analysis contexts are currently supported in \faro:
 
 \faro supports metric calculation across multiple analysis contexts; the same mathematical function can be called in a different analysis context to produce a different metric value.
 For example, the photometric and astrometric repeatability metrics and band-to-band astrometric transformation accuracy metrics are computed at the visit level on single-frame data products, whereas residual PSF ellipticity correlation metrics could be computed at either a per-visit level or on a per-tract level on the coadded data products.
-For some metrics, only certain analysis contexts make sense, and often the choice of analysis context will be dictated by statistics, e.g., a small 1\,\degsq CI dataset may not contain enough data to compute some metrics on a per-tract level.
+For some metrics, only certain analysis contexts make sense, and often the choice of analysis context will be dictated by statistics, e.g., a small 1\,\degsq  dataset may not contain enough data to compute some metrics on a per-tract level.
 \faro allows users to easily define new analysis contexts for their particular science needs.
 
 \subsection{Base Classes} \label{ssec:base_classes}
@@ -169,14 +169,14 @@ Metrics computed by \faro on the outputs of the LSST Science Pipelines are store
 From the Chronograf UI, the user can query the metric values, aggregate results, and create alerts to measured metrics that change or go out of specification.
 By tracking metric measurements, we are able to understand trends in the algorithmic performance of the LSST Science Pipelines and ultimately verify that we will meet our requirements.
 We have configured several dashboards for tracking \faro metrics computed on various precursor datasets at different cadences, e.g., nightly, monthly.
-Fig.~\ref{fig:squash_metrics_ci} shows the dashboard for \faro metrics computed on the nightly CI dataset (\S \ref{sssec:ci}). 
+Fig.~\ref{fig:squash_metrics_ci} shows the dashboard for \faro metrics computed on a small subset of the HSC RC2 dataset (\S \ref{sssec:ci}). 
 \begin{figure}[ht]
   \par\medskip 
   \centering
   \includegraphics[width=0.98\textwidth]{figures/squash-dashboard-ci.png}
   \par\medskip   
   \caption{\label{fig:squash_metrics_ci} 
-  InfluxDB/Chronograph dashboard showing the time evolution of a sample of metrics computed as part of nightly CI on a small subset of the HSC RC2 dataset.}
+  InfluxDB/Chronograph dashboard showing the time evolution of a sample of metrics computed as part of the nightly builds on a small subset of the HSC RC2 dataset.}
 \end{figure}
 
 \section{Faro Applications} \label{sec:applications}
@@ -186,7 +186,7 @@ Fig.~\ref{fig:squash_metrics_ci} shows the dashboard for \faro metrics computed 
 \faro is used to monitor the scientific performance of the LSST science pipelines on precursor datasets of different sizes and regularly processed on a variety of cadences\cite{dmtn-091}.
 By tracking metrics computed on the outputs of evolving versions of the science pipelines using a fixed dataset, we can rapidly identify the effect of code or configuration changes on the data products as development progresses during the LSST construction period.
 
-\subsubsection{Continuous Integration}\label{sssec:ci}
+\subsubsection{Nightly Integration}\label{sssec:ci}
 
 The LSST Science pipelines are run nightly and weekly on a small subset of the Hyper Suprime-Cam (HSC) Release Candidate 2 (HSC RC2) dataset\footnote{\url{https://github.com/lsst-dm/rc2_subset}} in the LSST Jenkins-based continuous integration (CI) system\cite{2018SPIE10707E..09J}.
 This dataset consists of the central 6 detectors for 8 randomly chosen visits in the 5 broad band filters in the HSC COSMOS field and was produced specifically for measuring metrics in a CI environment.
@@ -217,7 +217,7 @@ Metrics are reviewed regularly allowing us to identify changes and understand th
 \end{subfigure}
 \par\medskip 
 \caption{\label{fig:ci_metrics}
-Examples of the time evolution of four \faro metrics computed on a nightly cadence in CI over a period of one month on the outputs of the nightly data release processing of a small subset of the HSC PDR2 dataset.  
+Examples of the time evolution of four \faro metrics computed on a nightly cadence over a period of one month on the outputs of the nightly data release processing of a small subset of the HSC PDR2 dataset.  
 Left shows the AM1 metric that characterizes the astrometric scatter on two different spatial scales, 5 and 20 arcmins, and right shows the residual PSF ellipticity correlations, TE1 and TE2. }
 \end{figure}
 
@@ -319,8 +319,7 @@ The vertical dashed lines show the LSST SRD design specifications. }
 
 \section{Current Status and Future Development} \label{sec:future}
 
-The \faro framework is released as part of the LSST Science Pipelines distribution and is running in 
-nightly CI builds on small representative CI datasets and on a few tracts of HSC and DESC DC2 data to track the performance of the LSST Science Pipelines.
+The \faro framework is released as part of the LSST Science Pipelines distribution and is running in nightly builds on small representative datasets and on a few tracts of HSC and DESC DC2 data to track the performance of the LSST Science Pipelines.
 \faro is used to produce a detailed Characterization Metric Report for major 6-monthly releases of the pipelines. 
 \faro is starting to be used to characterize the performance of preliminary data from the Rubin Auxiliary Telescope imaging campaigns and was successfully run at scale on the outputs of the Rubin Operations Data Preview 0.2 processing of the DESC DC2 300\,\degsq dataset.
 
@@ -332,6 +331,6 @@ One indicator of the success of \faro is the steadily increasing number of activ
 
 In this paper, we have presented \faro, the LSST framework for automatically computing scalar performance metrics on the outputs of the LSST science pipelines on a range of spatial and temporal scales.
 In addition to computing the normative science performance metrics on the LSST data products, \faro provides a flexible and easy-to-use framework in which anyone can define and write a metric that will be computed on the LSST data products and run as part of the LSST science pipelines. 
-The system is successfully running in nightly and weekly CI on precursor datasets to track the performance of the LSST science pipelines and provide regression analysis as development continues. 
+The system is successfully running as part of nightly and weekly builds on precursor datasets to track the performance of the LSST science pipelines and provide regression analysis as development continues. 
 \faro has also been successfully demonstrated at scale with the reprocessing of the DESC DC2 dataset \cite{2021ApJS..253...31L} at the Rubin Interim Data Facility (IDF) running on Google cloud \cite{2021arXiv211115030O} in the context of Rubin Data Preview 0.2 (DP0.2)\cite{RTN-001}. 
 As we enter LSST commissioning, \faro will be a powerful tool to gain rapid insight into the quality of the data coming off the telescope. 
