@@ -74,7 +74,7 @@ Metric computation with \faro proceeds through three stages:
 \end{enumerate}
 Not all metrics will necessarily have a preparation stage as there may be no additional intermediate data products needed to compute the metric than those generated as part of the pipelines processing. However, all must have a measurement and summary stage.
 
-For example, the photometric repeatability metric, PA1, measures the RMS photometric repeatability of bright non-saturated unresolved point sources in a single filter.
+For example, the photometric repeatability metric, PA1, measures the RMS photometric repeatability of bright non-saturated point sources in a single filter.
 During the preparation stage, a matched source catalog is created for each tract and band that matches source detections in individual visits that correspond to the same physical astronomical object\footnote{LSST defines an Object as an astrophysical physical object, e.g., a star, galaxy or asteroid, and a Source as a single detection of an astrophysical object in an image. The association of non-moving Sources leads to Objects; the association of moving Sources leads to Solar System Objects.}.
 During the measurement stage, for each tract and band, the matched catalog computed and stored in the preparation stage is loaded into memory and used to compute the RMS scatter of fluxes for a single astrophysical object. 
 In the final summary stage, the measurements for the ensemble of individual tracts computed in the measurement stage are loaded to compute a median summary statistic per band. 
@@ -124,12 +124,11 @@ tasks:
 \section{Adding a  Metric} \label{sec:add}
 
 We anticipate that many developers and scientists will want to define their own metrics specifically to address concerns that arise as LSST progresses through the construction phase and into operations.
-%Is it really true that the first step is defining an analysis-context. Maybe ``understand the analysis-context''? Because the metric itself is context-agnostic, and this first step is really just figuring when you want to run it?
-The first step in writing a new metric is to define the analysis context (\S~\ref{ssec:analysis_context}) and to review the associated \texttt{Connections}, \texttt{Config}, and \texttt{Task} base classes (\S~\ref{ssec:base_classes}) to understand the in-memory Python objects that will be passed to the run method of the metric measurement task, and the configuration options.
+The first step in writing a new metric is to choose the analysis context (\S~\ref{ssec:analysis_context}) and to review the associated \texttt{Connections}, \texttt{Config}, and \texttt{Task} base classes (\S~\ref{ssec:base_classes}) to understand the in-memory Python objects that will be passed to the run method of the metric measurement task, and the configuration options.
 If the required analysis context and associated base class do not exist, they must first be created. 
 Once the analysis context and base class are defined, the metric can be implemented by creating a measurement \texttt{Task}, an instance of \texttt{lsst.pipe.base.Task} that will operate on in-memory Python objects and compute the metric. 
 Finally, the new metric is added to the appropriate pipeline YAML file so that it can be run.
-Fig.~\ref{fig:num_sources_task} shows an example of a non-normative metric \texttt{Task} written to compute the number of rows in an input Source or Object catalog, \texttt{NumSourcesTask}
+Fig.~\ref{fig:num_sources_task} shows an example of a non-normative metric \texttt{Task} written to compute the number of entries in an input Source or Object catalog, \texttt{NumSourcesTask}
 
 \begin{figure}[ht]
   \begin{center}
@@ -149,7 +148,7 @@ class NumSourcesTask(Task):
         else:
             nSources = len(catalog)
         self.log.info("Number of sources (nSources) = %i", nSources)
-        meas = Measurement("nsrcMeas", nSources * u.count)
+        meas = Measurement(metricName, nSources * u.count)
         return Struct(measurement=meas)
   
     \end{lstlisting}
@@ -247,22 +246,24 @@ The Rubin Auxiliary Telescope\cite{10.1117/12.2561112} (AuxTel) is a 1.2m f/18 t
 During commissioning, AuxTel is also being used as a control systems and data processing pathfinder via a series of imaging surveys. The imaging surveys are being conducted in three bands (\emph{g}, \emph{r}, and \emph{i}) using a 2x30s exposure sequence per visit.
 The first AuxTel imaging campaign collected multi-band data over a 1\,\degsq field of high stellar density in a series of 110 pointings, completing an average of 10 visits per pointing between Feb 2022 and May 2022. The data was processed with the LSST Science Pipelines, including measuring science performance metrics with \faro. This dataset is sufficient to explore coadds, repeatability, and optimize processing configurations.
 Single-visit and matched-visit science performance metrics, including the photometric repeatability PA1, were computed with \faro using data generated from the AuxTel Imaging Survey.
-Fig.~\ref{fig:faro_auxtel_metrics} shows the PA1 metric values for each bandpass separated into two distributions consider (a) all sources detected and (b) only sources in the center of the detector (1000 < X,Y < 3000 pixels). The physical filters used in the initial imaging campaign suffer from the inward creep of leaked epoxy around their edges, resulting in time-evolving vignetting. This effect is readily seen in the PA1 metric calculation.
+Fig.~\ref{fig:faro_auxtel_metrics} shows the PA1 metric values for bright non-saturated  point sources per bandpass separated into two distributions (a) sources detected across the full focal plane and (b) only sources detected in the center  region (1000 < X,Y < 3000 pixels). The physical filters used in the initial imaging campaign suffer from the inward creep of leaked epoxy around their edges, resulting in time-evolving vignetting. This effect is readily seen in the PA1 metric calculation.
 
 \begin{figure}[ht]
 \begin{subfigure}{.5\textwidth}
     \centering
-    \includegraphics[width=1.1\textwidth]{figures/pa1_auxtel}
-     \caption[\small]{(a) Photometric repeatability across the full detector}
+    \includegraphics[width=1.0\textwidth]{figures/pa1_auxtel}
+   % \par\medskip 
+     \caption{(a) full detector}
 \end{subfigure}
 \begin{subfigure}{.5\textwidth} 
     \centering
-    \includegraphics[width=1.1\textwidth]{figures/pa1_auxtel_central}
-    \caption[\small]{(b) Photometric repeatability in the central detector region}
+    \includegraphics[width=1.0\textwidth]{figures/pa1_auxtel_central}
+    %\par\medskip 
+    \caption{(b) central detector region}
 \end{subfigure}
 \par\medskip 
 \caption[short]{\label{fig:faro_auxtel_metrics} 
-The distributions of RMS values of the photometric repeatability of sources detected as part of the initial AuxTel imaging campaign. Vertical dashed lines show the calculated PA1 metric for each bandpass. The left panel shows the value of PA1 calculated for all sources detected and the right panel includes only the sources in the central region of the detector (1000 < X,Y < 3000 pixels). The central region of the detector is not affected by the vignetting due the epoxy creep on the filters leading to much tighter distributions and lower PA1 values.}
+Distributions of RMS values of the photometric repeatability of  bright non-saturated  point sources detected as part of the initial AuxTel imaging campaign. Vertical dashed lines show the calculated PA1 metric for each bandpass. The left panel shows the value of PA1 calculated for all sources detected and the right panel includes only the sources in the central region of the detector (1000 < X,Y < 3000 pixels). The central region of the detector is not affected by the vignetting due the epoxy creep on the filters leading to much tighter distributions and lower PA1 values.}
 \end{figure}
 
 \subsection{Rapid and first-look analysis} \label{ssec:rapid}
@@ -286,8 +287,8 @@ Data Preview 0 (DP0) \cite{RTN-001} is the first of these three data previews.
 The data set adopted for DP0 is the DESC 300\,\degsq catalog of simulated LSST-like images and catalogs generated by the Dark Energy Science Collaboration (DESC) for their Data Challenge 2 (DC2)\cite{2021ApJS..253...31L}.
 As part of the second phase of Data Preview 0, DP0.2, the DESC DC2 simulated images were reprocessed with Release 23 of the LSST Science Pipelines and released to the community on 7 July 2022.
 \faro pipelines were run as part of the DP0.2 reprocessing, interspersed with the DRP pipelines to compute performance metrics. 
-Fig.~\ref{fig:faro_dp02_distr_am1} and Fig.~\ref{fig:faro_dp02_distr_pa1} shows distributions of some of the performance metrics computed as part of DP0.2.
-\begin{figure}[ht]
+Fig.~\ref{fig:faro_dp02_distr_am1}, Fig.~\ref{fig:faro_dp02_distr_pa1} and Fig.~\ref{fig:faro_dp02_distr_te1} shows distributions of some of the performance metrics computed as part of DP0.2 together with a comparison to the SRD specifications. 
+\begin{figure}[h]
 \begin{subfigure}{.5\textwidth}
     \centering
     \includegraphics[width=0.98\textwidth]{figures/dp02_am1_alltracts_gri}
@@ -297,12 +298,11 @@ Fig.~\ref{fig:faro_dp02_distr_am1} and Fig.~\ref{fig:faro_dp02_distr_pa1} shows 
     \includegraphics[width=0.98\textwidth]{figures/dp02_am1_alltracts_uzy}
 \end{subfigure}
 \par\medskip
-\caption[short]{\label{fig:faro_dp02_distr_am1}
-The distributions of the RMS values of the astrometric repeatability on 5\arcmin\, timescales  in the a) \emph{g}, \emph{r}, and \emph{i})  and  b) \emph{u}, \emph{z}, and \emph{y} bands of sources detected as part of the DP0.2 processing campaign.
+\caption{\label{fig:faro_dp02_distr_am1}
+Distributions of the RMS values of the astrometric repeatability of bright non-saturated point sources detected as part of the DP0.2 processing campaign on 5\arcmin\, timescales  in the a) \emph{g}, \emph{r}, and \emph{i}  and  b) \emph{u}, \emph{z}, and \emph{y} bands.
 The vertical dashed lines show the LSST SRD design specifications. }
 \end{figure}
-
-\begin{figure}[ht]
+\begin{figure}[h]
 \begin{subfigure}{.5\textwidth}
     \centering
     \includegraphics[width=0.98\textwidth]{figures/dp02_pa1_alltracts_gri}
@@ -312,9 +312,23 @@ The vertical dashed lines show the LSST SRD design specifications. }
     \includegraphics[width=0.98\textwidth]{figures/dp02_pa1_alltracts_uzy}
 \end{subfigure}
 \par\medskip
-\caption[short]{\label{fig:faro_dp02_distr_pa1}
-The distributions of the RMS values of the photometric repeatability of bright non-saturated unresolved point sources  in the a) \emph{g}, \emph{r}, and \emph{i})  and  b) \emph{u}, \emph{z}, and \emph{l}) bands of sources detected as part of the DP0.2 processing campaign.  
+\caption{\label{fig:faro_dp02_distr_pa1}
+Distributions of the RMS values of the photometric repeatability of bright non-saturated point sources detected as part of the DP0.2 processing campaign in the a) \emph{g}, \emph{r}, and \emph{i}  and  b) \emph{u}, \emph{z}, and \emph{y} bands.  
 The vertical dashed lines show the LSST SRD design specifications. }
+\end{figure}
+\begin{figure}[h!]
+\begin{subfigure}{.5\textwidth}
+    \centering
+    \includegraphics[width=0.98\textwidth]{figures/dp02_te1_alltracts_gri}
+\end{subfigure}
+\begin{subfigure}{.5\textwidth}
+    \centering
+    \includegraphics[width=0.98\textwidth]{figures/dp02_te1_alltracts_uzy}
+\end{subfigure}
+\par\medskip
+\caption{\label{fig:faro_dp02_distr_te1}
+Distributions of the residual PSF ellipticity correlations of bright non-saturated  point sources  detected as part of the DP0.2 processing campaign on scales less than or equal to 1\arcmin\, timescales in the a) \emph{g}, \emph{r}, and \emph{i} and  b) \emph{u}, \emph{z}, and \emph{y} bands.
+The LSST SRD design specification for this metric is beyond the scales of the plots.}
 \end{figure}
 
 \section{Current Status and Future Development} \label{sec:future}
