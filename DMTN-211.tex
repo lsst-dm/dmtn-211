@@ -1,16 +1,12 @@
-% Submit a 4-page-minimum manuscript, by the advertised due date, for publication in the Proceedings of SPIE in the SPIE Digital Library
 \documentclass[]{spie}
-\input{meta}
 
 % Package imports go here.
 \usepackage{amsmath,amsfonts,amssymb}
 \usepackage{graphicx}
-\usepackage[colorlinks=true, allcolors=blue, backref=page]{hyperref}
+\usepackage[colorlinks=true, allcolors=blue]{hyperref}
 \usepackage{xspace}
-\usepackage{longtable}
 \usepackage{xcolor}
 \usepackage{listings}
-\usepackage{todonotes}
 \usepackage{subcaption}
 \captionsetup[subfigure]{labelformat=empty}
 
@@ -33,10 +29,6 @@
 \newcommand\arcdeg{\mbox{$^\circ$}}%
 \newcommand\arcmin{\mbox{$^\prime$}}%
 \newcommand\arcsec{\mbox{$^{\prime\prime}$}}%
-
-\newcommand{\docRef}{DMTN-211}
-\newcommand{\docUpstreamLocation}{\url{https://github.com/lsst-dm/dmtn-211}}
-\def\acronyms{\section*{ACRONYMS}\label{sec:acronyms}}
 
 \definecolor{codegreen}{rgb}{0,0.6,0}
 \definecolor{codegray}{rgb}{0.5,0.5,0.5}
@@ -89,24 +81,17 @@
 
 \title{Faro: A framework for measuring the scientific performance of petascale Rubin Observatory data products}
 \input{authors}
-\date{\today}
-
-% Option to view page numbers
-\pagestyle{plain} % change to \pagestyle{plain} for page numbers   
-%\setcounter{page}{301} % Set start page numbering at e.g. 301
  
 \begin{document}
 \maketitle
 
 \input{abstract}
+
+% Include a list of keywords after the abstract 
 \keywords{Rubin Observatory, Legacy Survey of Space and Time, LSST, Data Management, Metric,  Verification}
 
 % The main body of text
 \input{body}
-
-%The appendices
-\appendix
-%\input{appendix}
 
 \acknowledgments
 
@@ -118,8 +103,5 @@ Additional Rubin Observatory funding comes from private donations, grants to uni
 % https://lsst-texmf.lsst.io/lsstdoc.html#bibliographies
 \bibliographystyle{spiebib}
 \bibliography{local,lsst,lsst-dm,refs_ads,refs,books}
-
-%\acronyms 
-%\input{acronyms.tex}
 
 \end{document}
